@@ -1,0 +1,88 @@
+@import '../../styles/app.less';
+
+.custom-carousel-container {
+  position: relative;
+  height: 100%;
+
+  .ant-carousel {
+    height: 100%;
+
+    .slick-slider {
+      height: 100%;
+
+      .slick-list {
+        height: 100%;
+
+        .slick-track {
+          height: 100%;
+
+          .slick-slide {
+            height: 100%;
+
+            > div {
+              height: 100%;
+            }
+          }
+        }
+      }
+
+      .slick-dots {
+        bottom: -30px;
+        height: 12px;
+
+        li {
+          margin: 0 10%;
+
+          button {
+            width: 12px;
+            height: 12px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color .3s linear;
+          }
+        }
+      }
+    }
+  }
+
+  > .arrow-middle {
+    position: absolute;
+    top: 50%;
+    display: none;
+    font-size: 40px;
+    color: @white;
+    cursor: pointer;
+    opacity: .6;
+    transition: opacity 0.5 ease;
+    transform: translateY(-50%);
+
+    &.anticon:first-child {
+      left: -80px;
+    }
+
+    &.anticon:last-child {
+      right: -80px;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &.arrow-bottom {
+      top: 100%;
+      transform: translateY(-150%);
+    }
+  }
+
+  &.with-arrow {
+    .ant-carousel {
+      .slick-dots {
+        display: none;
+      }
+    }
+
+    > i {
+      display: inline-block;
+    }
+  }
+}

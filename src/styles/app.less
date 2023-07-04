@@ -1,0 +1,92 @@
+@primary-color: #3785e7;
+
+@layout-header-height: 40px;
+@border-radius-base: 0;
+
+@gray-cc: #ccc;
+@gray-dd: #ddd;
+@gray-ee: #eee;
+@gray-22: #222;
+@gray-33: #333;
+@gray-44: #444;
+@gray-66: #666;
+@gray-77: #777;
+@gray-88: #888;
+@gray-99: #999;
+@gray-fa: #fafafa;
+
+@black: black;
+@black-10: rgba(0, 0, 0, 0.1);
+@black-20: rgba(0, 0, 0, 0.2);
+@black-45: rgba(0, 0, 0, 0.45);
+@black-50: rgba(0, 0, 0, 0.5);
+@black-65: rgba(0, 0, 0, 0.65);
+
+@white: #fff;
+
+@red-1: #f00;
+@red-2: #e8524c;
+
+@violet-6: #6d28d9;
+
+@blue-1: #3785e7;
+@blue-2: #0853bf;
+@blue-3: #0055c0;
+@blue-4: #0084ff;
+
+@green-1: #009a61;
+
+@orange-1: #eb7350;
+
+@border-color: #e8e8e8;
+
+@theme-color: @blue-1;
+
+@screen-xl-width: 1200px;
+@screen-md-width: 768px;
+@screen-sm-width: 576px;
+@screen-xs-width: 480px;
+
+@font-family: 'PingFang SC', 'Microsoft YaHei', 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+
+@baseFontSize: 75; // 基于视觉稿横屏尺寸/100得出的基准font-size
+.fontSize2rem(@px) {
+  font-size: @px / @baseFontSize * 1rem;
+}
+
+.px2rem(@name, @px) {
+  @{name}: @px / @baseFontSize * 1rem;
+}
+
+.keyframes (@name, @frames) {
+  @-webkit-keyframes @name { @frames(); }
+  @-moz-keyframes @name { @frames(); }
+  @-ms-keyframes @name { @frames(); }
+  @-o-keyframes @name { @frames(); }
+  @keyframes @name { @frames(); }
+}
+
+@icomoon-font-family: "hkicon";
+@icomoon-font-path: "/fonts/hkicon";
+
+@hk-icon-circle: "\e90e";
+@hk-icon-blog: "\e90f";
+@hk-icon-github: "\e910";
+@hk-icon-segmentfault-path1: "\e911";
+@hk-icon-segmentfault-path2: "\e912";
+@hk-icon-weibo: "\e913";
+@hk-icon-zhihu: "\e914";
+@hk-icon-article: "\e907";
+@hk-icon-blog1: "\e908";
+@hk-icon-experience: "\e909";
+@hk-icon-index: "\e90a";
+@hk-icon-introduction: "\e90b";
+@hk-icon-project: "\e90c";
+@hk-icon-skill: "\e90d";
+@hk-icon-address: "\e900";
+@hk-icon-birthday: "\e901";
+@hk-icon-education: "\e902";
+@hk-icon-email: "\e903";
+@hk-icon-graduation: "\e904";
+@hk-icon-phone: "\e905";
+@hk-icon-telephone: "\e906";
