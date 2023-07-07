@@ -58,7 +58,8 @@ interface IResumeProps {
   isMobile: boolean;
 }
 
-export default function Resume({ isMobile }: IResumeProps) {
+export default function Resume() {
+  const isMobile = false;
   const options = useMemo(() => {
     if (isMobile) {
       return {
