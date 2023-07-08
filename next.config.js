@@ -3,6 +3,7 @@ const withLess = require("next-with-less");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
   lessLoaderOptions: {
     cssModules: false,
     javascriptEnabled: true,
@@ -16,19 +17,19 @@ const nextConfig = {
     unoptimized: true,
   },
   transpilePackages: ["antd"],
-  async headers() {
-    return [
-      {
-        source: "/styles/animate.css/@4.1.1/animate.css",
-        headers: [
-          {
-            key: "cache-control",
-            value: "public, immutable, max-age=31536000",
-          },
-        ],
-      },
-    ];
-  },
+  // async headers() {
+  //   return [
+  //     {
+  //       source: "/styles/animate.css/@4.1.1/animate.css",
+  //       headers: [
+  //         {
+  //           key: "cache-control",
+  //           value: "public, immutable, max-age=31536000",
+  //         },
+  //       ],
+  //     },
+  //   ];
+  // },
 };
 
 // 是否通过github actions部署
