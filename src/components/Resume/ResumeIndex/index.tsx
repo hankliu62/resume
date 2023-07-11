@@ -5,6 +5,7 @@ import React from "react";
 import { ReactSVG } from "react-svg";
 
 import * as Constants from "@/constants";
+import { getRoutePrefix } from "@/utils/route";
 
 interface IResumeIndexProps {
   isMobile: boolean;
@@ -14,7 +15,11 @@ export default function ResumeIndex({ isMobile }: IResumeIndexProps) {
   return (
     <div className="resume-index-wrapper">
       <div className="avatar-wrapper">
-        <img src="/images/resume/avatar.jpg" className="avatar" alt="avatar" />
+        <img
+          src={`${getRoutePrefix()}/images/resume/avatar.jpg`}
+          className="avatar"
+          alt="avatar"
+        />
       </div>
 
       <div className="name-wrapper">
