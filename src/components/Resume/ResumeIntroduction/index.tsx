@@ -4,6 +4,7 @@ import classNames from "classnames";
 import React from "react";
 
 import * as Constants from "@/constants";
+import { getRoutePrefix } from "@/utils/route";
 
 export interface IResumeIntroductionProps {
   isMobile: boolean;
@@ -50,12 +51,10 @@ export default function ResumeIntroduction({
             const { type, value } = info;
             return (
               <li className="information-item" key={type}>
-                <i
-                  className={classNames(
-                    "hk-icon",
-                    `hk-icon-${type}`,
-                    "information-item-icon"
-                  )}
+                <img
+                  className="information-item-icon"
+                  src={`${getRoutePrefix()}/images/resume/introduction/${type}.svg`}
+                  alt=""
                 />
                 <div className="information-item-data">{value}</div>
               </li>

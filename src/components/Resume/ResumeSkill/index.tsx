@@ -5,6 +5,7 @@ import classNames from "classnames";
 import React from "react";
 
 import * as Constants from "@/constants";
+import { getRoutePrefix } from "@/utils/route";
 
 export interface IResumeSkillProps {
   isMobile: boolean;
@@ -51,7 +52,10 @@ export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
                   content={renderSkillPopover(popover, percent)}
                 >
                   <div className="skill-wrapper">
-                    <img src={`/images/resume/skills/${type}.svg`} alt="" />
+                    <img
+                      src={`${getRoutePrefix()}/images/resume/skills/${type}.svg`}
+                      alt=""
+                    />
                   </div>
                 </Popover>
               </li>
