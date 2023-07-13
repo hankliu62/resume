@@ -6,6 +6,7 @@ import React, { useCallback, useRef, useState } from "react";
 import { Carousel } from "@/components";
 import * as Constants from "@/constants";
 import { isSafari } from "@/utils/platform";
+import { getRoutePrefix } from "@/utils/route";
 
 export interface IResumeExperienceProps {
   isMobile: boolean;
@@ -72,7 +73,11 @@ export default function ResumeExperience({ isMobile }: IResumeExperienceProps) {
               <div className="experience-wrapper" key={company}>
                 <div className="experience-item">
                   <div className="experience-image-wrapper">
-                    <img className="company-image" src={image} alt="Company" />
+                    <img
+                      className="company-image"
+                      src={getRoutePrefix() + image}
+                      alt="Company"
+                    />
                   </div>
                   <div className="experience-content-wrapper">
                     <h5 className="company-name">{company}</h5>

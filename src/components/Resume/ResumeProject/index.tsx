@@ -9,6 +9,7 @@ import React, { useState } from "react";
 
 import { Carousel, MessageModal, QrcodeModal } from "@/components";
 import * as Constants from "@/constants";
+import { getRoutePrefix } from "@/utils/route";
 
 interface IResumeProjectProps {
   isMobile: boolean;
@@ -73,7 +74,7 @@ export default function ResumeProject({ isMobile }: IResumeProjectProps) {
                     <div className="project-image-wrapper">
                       <img
                         className="project-image"
-                        src={image}
+                        src={getRoutePrefix() + image}
                         alt="Project"
                       />
                     </div>
