@@ -16,6 +16,7 @@ import {
   ResumeProject,
   ResumeSkill,
 } from "@/components/Resume";
+import { getRoutePrefix } from "@/utils/route";
 
 // const Options = {
 //   licenseKey: 'OPEN-SOURCE-GPLV3-LICENSE',
@@ -154,9 +155,10 @@ export default function Resume() {
         <Popover placement="top" content={<span>PDF简历</span>}>
           <a
             className="link-pdf"
-            href="/resume.pdf"
+            href={`${getRoutePrefix()}/resume.pdf`}
             target="_blank"
             title="刘小聪的PDF简历"
+            rel="noreferrer"
           >
             <FilePdfOutlined />
           </a>
