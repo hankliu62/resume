@@ -110,6 +110,33 @@ export const Skills = [
 
 export const Experiences = [
   {
+    company: "特赞(上海)信息科技有限公司",
+    time: "2021.09 - 2023.07",
+    profile:
+      "特赞致力于通过中国领先、世界一流的平台化和智能化技术，建构创意内容的数字新基建。以企业级内容数据资产管理为中心，特赞打造了连接企业内外「内容生产」和「内容流转」的数字化平台。",
+    post: "高级前端工程师",
+    works: [
+      "内容生产团队中管理后台系统网页功能开发和维护；",
+      "内容生产业务通用组建的开发和维护；",
+      "创新项目MuseLink，Musetransfer和Museart等前端项目的构建和开发；",
+      "特赞运维管理系统前端页面的开发和维护。",
+    ],
+    image: "/images/resume/experiences/bzy.jpg",
+  },
+  {
+    company: "上海掌小门教育科技有限公司",
+    time: "2018.11 - 2021.07",
+    profile:
+      "掌门一对一是一个高端中小学在线教育辅导品牌，超万人资深教研团队，深耕在线教育15年。专注小、初、高全科在线1对1辅导，量身定制辅导方案的在线教育公司。",
+    post: "研发工程师",
+    works: [
+      "音视频监控数据展示以及数据统计系统的前后端开发；",
+      "音视频通信的ElectronSDK和WebSDK的开发和封装；",
+      "自研ZMRTC通道的WebSDK的开发。",
+    ],
+    image: "/images/resume/experiences/bzy.jpg",
+  },
+  {
     company: "上海忻知信息科技有限公司",
     time: "2018.1 - 2018.11",
     profile:
