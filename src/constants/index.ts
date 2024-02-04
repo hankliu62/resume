@@ -118,7 +118,7 @@ export const Experiences = [
     works: [
       "内容生产团队中管理后台系统网页功能开发和维护；",
       "内容生产业务通用组建的开发和维护；",
-      "创新项目MuseLink，Musetransfer和Museart等前端项目的构建和开发；",
+      "创新项目MuseLink，MuseTransfer和MuseArt等前端项目的构建和开发；",
       "特赞运维管理系统前端页面的开发和维护。",
     ],
     image: "/images/resume/experiences/bzy.jpg",
