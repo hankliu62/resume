@@ -1,32 +1,34 @@
+import { getRoutePrefix } from "@/utils/route";
+
 /* eslint-disable max-len */
 export const SocialAccounts = [
   {
     type: "blog",
-    icon: "/images/resume/social-accounts/blog.svg",
+    icon: `${getRoutePrefix()}/images/resume/social-accounts/blog.svg`,
     link: "https://hankliu62.github.io/",
     name: "博客",
   },
   {
     type: "github",
-    icon: "/images/resume/social-accounts/github.svg",
+    icon: `${getRoutePrefix()}/images/resume/social-accounts/github.svg`,
     link: "https://github.com/hankliu62",
     name: "Github",
   },
   {
     type: "zhihu",
-    icon: "/images/resume/social-accounts/zhihu.svg",
+    icon: `${getRoutePrefix()}/images/resume/social-accounts/zhihu.svg`,
     link: "https://www.zhihu.com/people/hankliu62/activities",
     name: "知乎",
   },
   {
     type: "segmentfault",
-    icon: "/images/resume/social-accounts/segmentfault.svg",
+    icon: `${getRoutePrefix()}/images/resume/social-accounts/segmentfault.svg`,
     link: "https://segmentfault.com/u/yizhikewangfeixiangdezhu",
     name: "Segmentfault",
   },
   {
     type: "weibo",
-    icon: "/images/resume/social-accounts/weibo.svg",
+    icon: `${getRoutePrefix()}/images/resume/social-accounts/weibo.svg`,
     link: "https://weibo.com/2769648804/profile",
     name: "微博",
   },

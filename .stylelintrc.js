@@ -13,5 +13,6 @@ module.exports = {
         ignoreAtRules: ["tailwind"],
       },
     ],
+    "import-notation": "off",
   }, // 可以自己自定一些规则
 };

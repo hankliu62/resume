@@ -43,7 +43,7 @@ export default function ResumeIndex({ isMobile }: IResumeIndexProps) {
                 key={type}
               >
                 <ReactSVG
-                  src="/images/resume/circle.svg"
+                  src={`${getRoutePrefix()}/images/resume/circle.svg`}
                   className="social-account-circle"
                 />
                 <a
