@@ -58,19 +58,24 @@ export default function ResumeExperience({ isMobile }: IResumeExperienceProps) {
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         ref={experienceRef}
-        style={{ transform: `rotateY(${rotateY}deg) rotateX(${rotateX}deg)` }}
       >
         <Carousel
           className="experiences-carousel"
           effect="scrollx"
           isMobile={isMobile}
-          allowArrow={isMobile}
+          allowArrow
           dots={!isMobile}
         >
           {Constants.Experiences.map((experience) => {
             const { company, time, post, works, image } = experience;
             return (
-              <div className="experience-wrapper" key={company}>
+              <div
+                className="experience-wrapper"
+                key={company}
+                style={{
+                  transform: `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`,
+                }}
+              >
                 <div className="experience-item">
                   <div className="experience-image-wrapper">
                     <img
