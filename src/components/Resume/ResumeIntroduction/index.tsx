@@ -19,7 +19,7 @@ export default function ResumeIntroduction({
         <h2 className="title">自我介绍</h2>
       </div>
 
-      <div className="self-introduction-wrapper">
+      <div className="self-introduction-wrapper" data-aos="fade-up">
         <ol className="introductions">
           <li className={classNames("introduction-item")}>
             对前端方面有着浓厚的兴趣，
@@ -45,7 +45,7 @@ export default function ResumeIntroduction({
         </ol>
       </div>
 
-      <div className="self-information-wrapper">
+      <div className="self-information-wrapper" data-aos="fade-up">
         <ul className="information-items">
           {Constants.Information.map((info) => {
             const { type, value } = info;

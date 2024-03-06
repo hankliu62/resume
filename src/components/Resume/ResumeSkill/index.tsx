@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 "use client";
 
 import { Popover, Progress } from "antd";
@@ -11,15 +12,26 @@ export interface IResumeSkillProps {
   isMobile: boolean;
 }
 
-export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
-  const renderSkillPopover = (popover: any, percent: number) => {
-    return (
-      <div
-        className={classNames("skill-popover-wrapper", {
-          "skill-popover-wrapper-mobile": isMobile,
-        })}
-      >
-        <h5 className="skill-popover-title">{popover}</h5>
+const SkillPopover = ({
+  popover,
+  isMobile,
+  percent,
+  contexts,
+}: {
+  popover: any;
+  percent: number;
+  contexts: string[];
+  isMobile?: boolean;
+}) => {
+  return (
+    <div
+      className={classNames("skill-popover-wrapper", {
+        "skill-popover-wrapper-mobile": isMobile,
+      })}
+    >
+      <h5 className="skill-popover-title text-center">{popover}</h5>
+      <div className="mb-[8px]">
+        <label className="mb-1 block text-base font-medium">熟练度: </label>
         <div className="skill-popover-progress">
           <Progress
             percent={percent}
@@ -29,9 +41,21 @@ export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
           />
         </div>
       </div>
-    );
-  };
+      <div>
+        <label className="mb-1 block text-base font-medium">技能点: </label>
+        <ul className="mb-0 ml-4 list-disc gap-y-1">
+          {contexts.map((text) => (
+            <li className="mb-0 max-w-[320px]" key={text}>
+              {text}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
 
+export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
   return (
     <div className="resume-skill-wrapper">
       <div className="title-wrapper">
@@ -41,21 +65,44 @@ export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
       <div className="skills-wrapper">
         <ul className="skills">
           {Constants.Skills.map((skill) => {
-            const { type, popover, percent } = skill;
+            const { type, popover, percent, contexts } = skill;
             return (
-              <li className={classNames("skill", `skill-${type}`)} key={type}>
+              <li
+                className={classNames("skill relative", `skill-${type}`)}
+                key={type}
+              >
                 <Popover
                   placement="top"
                   overlayClassName={classNames("skill-popover", {
                     "skill-popover-mobile": isMobile,
                   })}
-                  content={renderSkillPopover(popover, percent)}
-                >
-                  <div className="skill-wrapper">
-                    <img
-                      src={`${getRoutePrefix()}/images/resume/skills/${type}.svg`}
-                      alt=""
+                  content={
+                    <SkillPopover
+                      isMobile={isMobile}
+                      popover={popover}
+                      percent={percent}
+                      contexts={contexts}
                     />
+                  }
+                >
+                  <div
+                    className="skill-wrapper group relative flex items-center bg-white bg-[length:86px_86px] bg-center bg-no-repeat transition-all hover:bg-[length:92px_92px]"
+                    style={{
+                      backgroundImage: `url(
+                          ${getRoutePrefix()}/images/resume/skills/${type}.svg
+                        )`,
+                    }}
+                  >
+                    <div className="absolute inset-0 bottom-0 left-0 right-0 top-0 hidden h-full w-full rounded-[50%] bg-[linear-gradient(to_right,_#eee,_#aaa)] mix-blend-multiply group-hover:block" />
+                    <div className="mx-[5px] hidden w-full group-hover:block">
+                      <Progress
+                        percent={percent}
+                        strokeColor="#00b38a"
+                        type="dashboard"
+                        size={150}
+                        format={(p) => `熟练度\r\n${p}%`}
+                      />
+                    </div>
                   </div>
                 </Popover>
               </li>

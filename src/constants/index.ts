@@ -72,41 +72,59 @@ export const Skills = [
     type: "html5",
     popover: "HTML",
     percent: 85,
+    contexts: [
+      "熟练HTML5与CSS3、DIV+CSS网页布局样式，了解HTML语义化；",
+      "熟悉流式布局和弹性盒子布局，能处理PC和移动端各主流浏览器的兼容问题；",
+    ],
   },
   {
     type: "css3",
     popover: "CSS",
     percent: 75,
+    contexts: [
+      "熟练HTML5与CSS3、DIV+CSS网页布局样式；",
+      "熟悉Sass、Less等CSS预处理器语言；",
+    ],
   },
   {
     type: "javascript",
     popover: "Javascript",
     percent: 85,
-  },
-  {
-    type: "es6",
-    popover: "ES6",
-    percent: 80,
-  },
-  {
-    type: "vue",
-    popover: "Vue",
-    percent: 75,
+    contexts: [
+      "熟悉原生JavaScript，熟悉jQuery，了解Zepto；熟悉ES6特性；",
+      "熟悉gulp、webpack等工程化构建化工具，能够使用其进行相应的JS、CSS等代码检查、（图片）压缩、优化前端性能；",
+      "熟悉Typescript，能够使用其进行相关SDK的开发和维护；",
+    ],
   },
   {
     type: "react",
     popover: "React",
     percent: 80,
+    contexts: ["熟悉React等主流Web前端框架，能够独立开发SPA应用；"],
+  },
+  {
+    type: "vue",
+    popover: "Vue",
+    percent: 75,
+    contexts: ["熟悉Vue等主流Web前端框架，能够独立开发SPA应用；"],
   },
   {
     type: "nodejs",
     popover: "Node",
     percent: 60,
+    contexts: ["了解nodejs，能够使用其搭建简单的服务器;"],
   },
   {
     type: "golang",
     popover: "Go",
     percent: 55,
+    contexts: ["了解golang，能够阅读代码并且进行简单功能的开发。"],
+  },
+  {
+    type: "python",
+    popover: "Python",
+    percent: 50,
+    contexts: ["了解python，能够阅读代码并且进行简单功能的开发。"],
   },
 ];
 

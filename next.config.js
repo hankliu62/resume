@@ -5,12 +5,14 @@ const withLess = require("next-with-less");
 const nextConfig = {
   output: "export",
   lessLoaderOptions: {
-    cssModules: false,
-    javascriptEnabled: true,
-    paths: [
-      path.resolve(__dirname, "node_modules"),
-      path.resolve(__dirname, "src"),
-    ],
+    lessOptions: {
+      cssModules: false,
+      javascriptEnabled: true,
+      paths: [
+        path.resolve(__dirname, "node_modules"),
+        path.resolve(__dirname, "src"),
+      ],
+    },
   },
   reactStrictMode: true,
   images: {
