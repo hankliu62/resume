@@ -113,7 +113,12 @@ export default function Resume() {
                 </div>
               </Section>
               <Section>
-                <div className="section resume-section resume-section-introduction">
+                <div
+                  className="section resume-section resume-section-introduction"
+                  style={{
+                    backgroundImage: `url(${getRoutePrefix()}/images/resume/background.png)`,
+                  }}
+                >
                   <ResumeIntroduction isMobile={isMobile} />
                 </div>
               </Section>
@@ -123,7 +128,12 @@ export default function Resume() {
                 </div>
               </Section>
               <Section>
-                <div className="section resume-section resume-section-experience">
+                <div
+                  className="section resume-section resume-section-experience"
+                  style={{
+                    backgroundImage: `url(${getRoutePrefix()}/images/resume/background.png)`,
+                  }}
+                >
                   <ResumeExperience isMobile={isMobile} />
                 </div>
               </Section>

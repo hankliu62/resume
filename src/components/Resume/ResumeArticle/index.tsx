@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Typed from "typed.js";
 
 import * as Constants from "@/constants";
+import { getRoutePrefix } from "@/utils/route";
 
 interface IResumeArticleProps {
   isMobile: boolean;
@@ -78,7 +79,12 @@ export default function ResumeArticle({ isMobile }: IResumeArticleProps) {
 
   return (
     <div className="resume-article-wrapper">
-      <div className="resume-article-banner">
+      <div
+        className="resume-article-banner"
+        style={{
+          backgroundImage: `url(${getRoutePrefix()}/images/resume/article/banner.jpg)`,
+        }}
+      >
         <div className="resume-article-banner-mask" />
       </div>
       <div className="resume-article-content">
