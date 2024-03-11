@@ -8,6 +8,7 @@ import {
 import React, { useState } from "react";
 
 import { Carousel, MessageModal, QrcodeModal } from "@/components";
+import Swiper from "@/components/Swiper";
 import * as Constants from "@/constants";
 import { getRoutePrefix } from "@/utils/route";
 
@@ -41,6 +42,89 @@ export default function ResumeProject({ isMobile }: IResumeProjectProps) {
     setIsVisibleSummary(false);
   };
 
+  const renderSlides = () => {
+    return Constants.Projects.map((project) => {
+      const {
+        name,
+        company,
+        link,
+        time,
+        image,
+        duties,
+        profile,
+        summary: projectSummary,
+      } = project;
+
+      return (
+        <div
+          className="project-wrapper group relative !h-[450px] w-[750px] overflow-hidden rounded-md bg-white py-[20px] shadow-[inset_0_0_10px_#ddd]"
+          key={name + company}
+        >
+          <div className="project-item-wrapper">
+            <div className="project-item">
+              <div className="project-image-wrapper">
+                <img
+                  className="project-image"
+                  src={getRoutePrefix() + image}
+                  alt="Project"
+                />
+              </div>
+              <div className="project-content-wrapper">
+                <h5 className="project-name">
+                  {`${name}${isMobile ? "" : `(${company})`}`}
+                </h5>
+                <div className="project-time">{time}</div>
+                <div className="project-profile" title="profile">
+                  {profile}
+                </div>
+                <ul className="project-duties">
+                  {duties.map((duty) => {
+                    return (
+                      <li className="project-duty" key={duty}>
+                        {duty}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+            <ul className="project-actions-wrapper absolute bottom-0 left-0 flex h-0 w-full overflow-y-hidden opacity-0 transition-all group-hover:h-[36px] group-hover:opacity-100">
+              <li className="project-action">
+                <a
+                  className="project-link"
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer external nofollow"
+                  title={`刘小聪的项目-${name}-链接地址`}
+                >
+                  <LinkOutlined type="link" />
+                </a>
+              </li>
+              <li className="project-action">
+                <QrcodeOutlined
+                  type="qrcode"
+                  onClick={() => {
+                    onOpenVisibleQr(link);
+                  }}
+                  title="项目二维码"
+                />
+              </li>
+              <li className="project-action">
+                <FileTextOutlined
+                  type="file-text"
+                  onClick={() => {
+                    onOpenVisibleSummary(projectSummary);
+                  }}
+                  title="项目总结"
+                />
+              </li>
+            </ul>
+          </div>
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="resume-project-wrapper">
       <div className="title-wrapper">
@@ -48,91 +132,20 @@ export default function ResumeProject({ isMobile }: IResumeProjectProps) {
       </div>
 
       <div className="projects-wrapper">
-        <Carousel
+        <Swiper
+          className="!w-[100vw]"
+          slideClassName="!w-[750px] rounded-md overflow-hidden"
+          slides={renderSlides()}
+        />
+        {/* <Carousel
           className="projects-carousel"
           effect={isMobile ? "scrollx" : "fade"}
           isMobile={isMobile}
           allowArrow
           dots={!isMobile}
         >
-          {Constants.Projects.map((project) => {
-            const {
-              name,
-              company,
-              link,
-              time,
-              image,
-              duties,
-              profile,
-              summary: projectSummary,
-            } = project;
-
-            return (
-              <div className="project-wrapper" key={company}>
-                <div className="project-item-wrapper">
-                  <div className="project-item">
-                    <div className="project-image-wrapper">
-                      <img
-                        className="project-image"
-                        src={getRoutePrefix() + image}
-                        alt="Project"
-                      />
-                    </div>
-                    <div className="project-content-wrapper">
-                      <h5 className="project-name">
-                        {`${name}${isMobile ? "" : `(${company})`}`}
-                      </h5>
-                      <div className="project-time">{time}</div>
-                      <div className="project-profile" title="profile">
-                        {profile}
-                      </div>
-                      <ul className="project-duties">
-                        {duties.map((duty) => {
-                          return (
-                            <li className="project-duty" key={duty}>
-                              {duty}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                  <ul className="project-actions-wrapper">
-                    <li className="project-action">
-                      <a
-                        className="project-link"
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer external nofollow"
-                        title={`刘小聪的项目-${name}-链接地址`}
-                      >
-                        <LinkOutlined type="link" />
-                      </a>
-                    </li>
-                    <li className="project-action">
-                      <QrcodeOutlined
-                        type="qrcode"
-                        onClick={() => {
-                          onOpenVisibleQr(link);
-                        }}
-                        title="项目二维码"
-                      />
-                    </li>
-                    <li className="project-action">
-                      <FileTextOutlined
-                        type="file-text"
-                        onClick={() => {
-                          onOpenVisibleSummary(projectSummary);
-                        }}
-                        title="项目总结"
-                      />
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            );
-          })}
-        </Carousel>
+          {renderSlides()}
+        </Carousel> */}
       </div>
 
       <QrcodeModal

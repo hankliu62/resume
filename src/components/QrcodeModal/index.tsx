@@ -23,7 +23,7 @@ export default function QrcodeModal({
       open={visible}
       footer={null}
       closable={false}
-      width={isMobile ? "80%" : 250 + 10 * 2 + 24 * 2}
+      width={isMobile ? "80%" : 250 + 24 * 2}
       onCancel={onCancel}
       wrapClassName={classNames("qrcode-modal", {
         "mobile-qrcode-modal": isMobile,

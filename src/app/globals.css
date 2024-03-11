@@ -27,3 +27,33 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.c-swiper .swiper-slide .project-wrapper {
+  transform: scale(0.92);
+  transform-origin: 50% 100%;
+  transition: transform .6s cubic-bezier(0.8, 0, 0.55, 0.94);
+}
+
+.c-swiper .swiper-slide.swiper-slide-active .project-wrapper {
+  transform: scale(1);
+}
+
+.c-swiper .swiper-button-prev,
+.c-swiper .swiper-button-next {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.c-swiper .swiper-button-prev:hover,
+.c-swiper .swiper-button-next:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.c-swiper .swiper-button-prev {
+  left: calc((100vw - 750px) / 2);
+  transform: translateX(-60px);
+}
+
+.c-swiper .swiper-button-next {
+  right: calc((100vw - 750px) / 2);
+  transform: translateX(60px);
+}

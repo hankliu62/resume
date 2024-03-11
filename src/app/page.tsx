@@ -138,7 +138,7 @@ export default function Resume() {
                 </div>
               </Section>
               <Section>
-                <div className="section resume-section resume-section-project">
+                <div className="section resume-section resume-section-project overflow-x-hidden">
                   <ResumeProject isMobile={isMobile} />
                 </div>
               </Section>

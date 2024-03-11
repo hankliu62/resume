@@ -218,7 +218,7 @@ export const Projects = [
     image: "/images/resume/projects/tezign.jpeg",
   },
   {
-    name: "特赞运维管理系统",
+    name: "特赞内容生产后台管理系统",
     company: "特赞（上海）信息科技有限公司",
     time: "2021.09 - 2022.11",
     profile:
