@@ -1,16 +1,16 @@
 "use client";
 
+import classNames from "classnames";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Typed from "typed.js";
 
 import * as Constants from "@/constants";
+import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
 
-interface IResumeArticleProps {
-  isMobile: boolean;
-}
+export default function ResumeArticle() {
+  const isMobile = useMobile();
 
-export default function ResumeArticle({ isMobile }: IResumeArticleProps) {
   const el = useRef<HTMLSpanElement | null>(null);
   const contenedor = useRef<HTMLDivElement | null>(null);
   const cube = useRef<HTMLUListElement | null>(null);
@@ -87,9 +87,21 @@ export default function ResumeArticle({ isMobile }: IResumeArticleProps) {
       >
         <div className="resume-article-banner-mask" />
       </div>
-      <div className="resume-article-content">
-        <div className="title-wrapper">
-          <h1 className="title">
+      <div
+        className={classNames("resume-article-content", {
+          "!w-full px-6": isMobile,
+        })}
+      >
+        <div
+          className={classNames("title-wrapper", {
+            "min-h-[30vh]": isMobile,
+          })}
+        >
+          <h1
+            className={classNames("title", {
+              "text-center !text-4xl": isMobile,
+            })}
+          >
             <a
               className="link-blog"
               href={Constants.BlogLink}
@@ -100,72 +112,78 @@ export default function ResumeArticle({ isMobile }: IResumeArticleProps) {
               HankLiu的博客小屋
             </a>
           </h1>
-          <div className="sub-title">
+          <div
+            className={classNames("sub-title", {
+              "!text-xl": isMobile,
+            })}
+          >
             <span ref={el} />
             {/* <span className="blinking-cursor">|</span> */}
           </div>
         </div>
 
-        <div className="contenedor" ref={contenedor}>
-          <ul
-            className="cube animar"
-            ref={cube}
-            // style={{
-            //   transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-            // }}
-            onMouseMove={onCubeMouseMove}
-            onMouseLeave={onCubeMouseLeave}
-          >
-            <li className="cara">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                version="1.1"
-                height="100"
-                width="100"
-                viewBox="-50 -50 200 200"
-              >
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  strokeWidth="5"
-                  stroke="black"
-                  strokeOpacity="0.5"
-                  fillOpacity="0"
-                ></circle>
-                <rect
-                  id="clockwise"
-                  x="47.5"
-                  y="27.5"
-                  width="5"
-                  height="25"
-                  rx="2.5"
-                  ry="2.5"
-                  fill="black"
-                  fillOpacity="0.5"
-                  transform="rotate(33010 50 50)"
-                ></rect>
-                <rect
-                  id="minute"
-                  x="48.5"
-                  y="16.5"
-                  width="3"
-                  height="35"
-                  rx="1.5"
-                  ry="1.5"
-                  fill="black"
-                  fillOpacity="0.5"
-                  transform="rotate(120 50 50)"
-                ></rect>
-              </svg>
-            </li>
-            <li className="cara">K</li>
-            <li className="cara">X</li>
-            <li className="cara">L</li>
-            <li className="cara">C</li>
-            <li className="cara">Q</li>
-          </ul>
-        </div>
+        {!isMobile && (
+          <div className="contenedor" ref={contenedor}>
+            <ul
+              className="cube animar"
+              ref={cube}
+              // style={{
+              //   transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+              // }}
+              onMouseMove={onCubeMouseMove}
+              onMouseLeave={onCubeMouseLeave}
+            >
+              <li className="cara">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  version="1.1"
+                  height="100"
+                  width="100"
+                  viewBox="-50 -50 200 200"
+                >
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    strokeWidth="5"
+                    stroke="black"
+                    strokeOpacity="0.5"
+                    fillOpacity="0"
+                  ></circle>
+                  <rect
+                    id="clockwise"
+                    x="47.5"
+                    y="27.5"
+                    width="5"
+                    height="25"
+                    rx="2.5"
+                    ry="2.5"
+                    fill="black"
+                    fillOpacity="0.5"
+                    transform="rotate(33010 50 50)"
+                  ></rect>
+                  <rect
+                    id="minute"
+                    x="48.5"
+                    y="16.5"
+                    width="3"
+                    height="35"
+                    rx="1.5"
+                    ry="1.5"
+                    fill="black"
+                    fillOpacity="0.5"
+                    transform="rotate(120 50 50)"
+                  ></rect>
+                </svg>
+              </li>
+              <li className="cara">K</li>
+              <li className="cara">X</li>
+              <li className="cara">L</li>
+              <li className="cara">C</li>
+              <li className="cara">Q</li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

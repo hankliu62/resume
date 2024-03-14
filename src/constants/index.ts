@@ -37,7 +37,7 @@ export const SocialAccounts = [
 export const User = {
   Name: "刘小聪",
   Signature:
-    "「曾经的梦想，结果都让别人实现了；以后的梦想，也该轮到自己来完成了！」",
+    "曾经的梦想，结果都让别人实现了；以后的梦想，也该轮到自己来完成了！",
 };
 
 export const Information = [
@@ -154,7 +154,7 @@ export const Experiences = [
       "音视频通信的ElectronSDK和WebSDK的开发和封装；",
       "自研ZMRTC通道的WebSDK的开发。",
     ],
-    image: "/images/resume/experiences/bzy.jpg",
+    image: "/images/resume/experiences/zhangmen.png",
   },
   {
     company: "上海忻知信息科技有限公司",
@@ -233,6 +233,24 @@ export const Projects = [
       "入职后接手的项目，该系统使用的技术栈为react+sass+typescript+webpack，由于系统内容庞大，由多人合作共同维护，每个人都负责自己的模块，熟悉了多人多功能同时协同迭代开发的方式，增加了解决代码冲突的经验，由于项目使用react17版本，同时熟练了react hooks的使用，由于接手钱项目迭代时间长，项目中存在很多没有使用的页面和组件代码，使得项目体积臃肿，使用DeadCodePlugin插件检测删除无用代码，同时内容模块多，每次构建发布都需要等待很长的时间，不便于开发和测试环境的功能验证，通过升级webpack到最新版本，配合webpack缓存，以及Eslint+Stylelint操作前置到Commit时等方式，大大缩减了构建的时间，提高开发效率和体验。同时在迭代间隙期间，还会穿插一些创新Web项目和小程序的开发，创新项目采用的技术有umijs，nextjs以及tarojs等，学习了新的前端框架。",
     link: "https://muselink.cc/",
     image: "/images/resume/projects/muselink.svg",
+  },
+  {
+    name: "音视频数据指标监控管理平台",
+    company: "上海掌小门教育科技有限公司",
+    time: "2018.11 - 2021.07",
+    profile:
+      "音视频数据指标监控管理平台主要负责监控自研ZMRTC通道音视频实时通讯质量数据的监控以及工单率和上课使用量等多项数据指标的统计。",
+    duties: [
+      "独立开发，监控前端系统从构建、开发到维护都是独自一人实现；监控后台系统的后期开发和维护；",
+      "监控前端系统技术栈采用的是vue全家桶，监控后台系统技术栈采用的是使用python的Flask框架实现一个RESTful API服务器端；",
+      "在布局上使用elementUI的响应式栅格布局，在不同的屏幕上都能完美展示网页内容；",
+      "针对移动端使用不同的css和切图，图标和表格都兼容移动平台；",
+      "在项目之外，封装electron平台和web平台音视频相关的SDK，跨平台兼容和磨平SDK之间的差异性，方便业务端跨平台的接入，真正只需要关注业务端逻辑问题。",
+    ],
+    summary:
+      "该项目系统前端基础架构是独自一人完成构建和开发任务，由于系统迭代需求比较快，能够尽快的给到数据监控页面方便ZMRTC开发人员进行问题的排查，所以前端系统当时选择选择vue全家桶，监控数据图表选择Echart.js库进行数据可视化的展示，然后中后期，由于人员调整，系统后台服务的开发也由本人接手，由于之前对python语言技术了解不是很多，为了能够对监控系统的维护和后续开发，在这一阶段对python语言进行了查漏补缺式的快速的学习，由于每日课程量和webrtc监控数据量比较大，所以后期中使用了pandas这一开源库，为Python编程语言提供高性能,易于使用的数据结构和数据分析工具。由于后期阶段独自一个人完成了项目前后端的开发，总的来说的话，让我对项目前后端分离开发流程又有了深刻的了解，以后台开发的角度来思考，如何封装数据让前端开发人员方便来进行数据的展示，而且还学习的新技术python这一新的语言技术，然后同时也学习了数据库MYSQL和redis相关的知识，拓广技术的知识面。",
+    link: "",
+    image: "/images/resume/projects/zhangmen.png",
   },
   {
     name: "八爪鱼·AI",

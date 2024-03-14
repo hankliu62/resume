@@ -4,15 +4,12 @@ import classNames from "classnames";
 import React from "react";
 
 import * as Constants from "@/constants";
+import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
 
-export interface IResumeIntroductionProps {
-  isMobile: boolean;
-}
+export default function ResumeIntroduction() {
+  const isMobile = useMobile();
 
-export default function ResumeIntroduction({
-  isMobile,
-}: IResumeIntroductionProps) {
   return (
     <div className="resume-introduction-wrapper">
       <div className="title-wrapper">
@@ -24,8 +21,8 @@ export default function ResumeIntroduction({
           <li className={classNames("introduction-item")}>
             对前端方面有着浓厚的兴趣，
             {isMobile
-              ? "有着四年多的前端工作经验"
-              : "四年来的前端工作经验，使我对前端技术的热情高涨，实战方面得到提升，希望能够在前端这条路上一直走下去"}
+              ? "有着多年的前端工作经验"
+              : "这几年来的前端工作经验，使我对前端技术的热情高涨，实战方面得到提升，希望能够在前端这条路上一直走下去"}
             ；
           </li>
           <li className="introduction-item">
@@ -56,7 +53,13 @@ export default function ResumeIntroduction({
                   src={`${getRoutePrefix()}/images/resume/introduction/${type}.svg`}
                   alt=""
                 />
-                <div className="information-item-data">{value}</div>
+                <div
+                  className={classNames("information-item-data break-all", {
+                    "text-xs": isMobile,
+                  })}
+                >
+                  {value}
+                </div>
               </li>
             );
           })}

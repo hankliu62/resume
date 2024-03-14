@@ -17,6 +17,7 @@ import {
   ResumeProject,
   ResumeSkill,
 } from "@/components/Resume";
+import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
 
 // const Options = {
@@ -61,7 +62,7 @@ interface IResumeProps {
 }
 
 export default function Resume() {
-  const isMobile = false;
+  const isMobile = useMobile();
   const options = useMemo(() => {
     if (isMobile) {
       return {

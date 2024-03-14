@@ -6,11 +6,8 @@ import classNames from "classnames";
 import React from "react";
 
 import * as Constants from "@/constants";
+import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
-
-export interface IResumeSkillProps {
-  isMobile: boolean;
-}
 
 const SkillPopover = ({
   popover,
@@ -55,7 +52,9 @@ const SkillPopover = ({
   );
 };
 
-export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
+export default function ResumeSkill() {
+  const isMobile = useMobile();
+
   return (
     <div className="resume-skill-wrapper">
       <div className="title-wrapper">
@@ -63,12 +62,18 @@ export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
       </div>
 
       <div className="skills-wrapper">
-        <ul className="skills">
+        <ul
+          className={classNames("skills", {
+            "!flex justify-between": isMobile,
+          })}
+        >
           {Constants.Skills.map((skill) => {
             const { type, popover, percent, contexts } = skill;
             return (
               <li
-                className={classNames("skill relative", `skill-${type}`)}
+                className={classNames("skill relative", `skill-${type}`, {
+                  "!w-[33.3%]": isMobile,
+                })}
                 key={type}
               >
                 <Popover
@@ -86,7 +91,13 @@ export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
                   }
                 >
                   <div
-                    className="skill-wrapper group relative flex items-center bg-white bg-[length:86px_86px] bg-center bg-no-repeat transition-all hover:bg-[length:92px_92px]"
+                    className={classNames(
+                      "skill-wrapper group relative flex items-center bg-white bg-[length:86px_86px] bg-center bg-no-repeat transition-all hover:bg-[length:92px_92px]",
+                      {
+                        "!h-28 !w-28 !bg-[length:3rem_3rem] hover:!bg-[length:2.5rem_2.5rem]":
+                          isMobile,
+                      }
+                    )}
                     style={{
                       backgroundImage: `url(
                           ${getRoutePrefix()}/images/resume/skills/${type}.svg
@@ -95,13 +106,20 @@ export default function ResumeSkill({ isMobile }: IResumeSkillProps) {
                   >
                     <div className="absolute inset-0 bottom-0 left-0 right-0 top-0 hidden h-full w-full rounded-[50%] bg-[linear-gradient(to_right,_#eee,_#aaa)] mix-blend-multiply group-hover:block" />
                     <div className="mx-[5px] hidden w-full group-hover:block">
-                      <Progress
-                        percent={percent}
-                        strokeColor="#00b38a"
-                        type="dashboard"
-                        size={150}
-                        format={(p) => `熟练度\r\n${p}%`}
-                      />
+                      {isMobile ? (
+                        <div
+                          className="text-center text-base font-medium text-white"
+                          style={{ mixBlendMode: "color-dodge" }}
+                        >{`熟练度 ${percent}%`}</div>
+                      ) : (
+                        <Progress
+                          percent={percent}
+                          strokeColor="#00b38a"
+                          type="dashboard"
+                          size={150}
+                          format={(p) => `熟练度\r\n${p}%`}
+                        />
+                      )}
                     </div>
                   </div>
                 </Popover>

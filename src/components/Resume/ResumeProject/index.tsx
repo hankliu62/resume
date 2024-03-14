@@ -5,18 +5,21 @@ import {
   LinkOutlined,
   QrcodeOutlined,
 } from "@ant-design/icons";
+import classNames from "classnames";
 import React, { useState } from "react";
 
 import { Carousel, MessageModal, QrcodeModal } from "@/components";
+import Carousel3d from "@/components/Carousel3d";
 import Swiper from "@/components/Swiper";
 import * as Constants from "@/constants";
+import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
 
-interface IResumeProjectProps {
-  isMobile: boolean;
-}
+export default function ResumeProject() {
+  const isMobile = useMobile();
 
-export default function ResumeProject({ isMobile }: IResumeProjectProps) {
+  const projectsLength = Constants.Projects.length;
+
   const [isVisibleQr, setIsVisibleQr] = useState(false);
   const [qrValue, setQrValue] = useState("");
   const [isVisibleSummary, setIsVisibleSummary] = useState(false);
@@ -57,30 +60,74 @@ export default function ResumeProject({ isMobile }: IResumeProjectProps) {
 
       return (
         <div
-          className="project-wrapper group relative !h-[450px] w-[750px] overflow-hidden rounded-md bg-white py-[20px] shadow-[inset_0_0_10px_#ddd]"
+          className={classNames(
+            "project-wrapper group relative overflow-hidden rounded-md bg-white py-[20px] shadow-[inset_0_0_10px_#ddd]",
+            {
+              "!h-[72vh] w-[62vw]": isMobile,
+              "!h-[450px] w-[750px]": !isMobile,
+            }
+          )}
           key={name + company}
         >
           <div className="project-item-wrapper">
-            <div className="project-item">
-              <div className="project-image-wrapper">
+            <div
+              className={classNames("project-item", {
+                "flex-col": isMobile,
+              })}
+            >
+              <div
+                className={classNames("project-image-wrapper", {
+                  "!w-full": isMobile,
+                })}
+              >
                 <img
-                  className="project-image"
+                  className={classNames("project-image", {
+                    "!mb-1 !h-16": isMobile,
+                  })}
                   src={getRoutePrefix() + image}
                   alt="Project"
                 />
               </div>
-              <div className="project-content-wrapper">
-                <h5 className="project-name">
-                  {`${name}${isMobile ? "" : `(${company})`}`}
+              <div
+                className={classNames("project-content-wrapper", {
+                  "!px-6": isMobile,
+                })}
+              >
+                <h5
+                  className={classNames("project-name", {
+                    "!mb-2 flex justify-center": isMobile,
+                  })}
+                >
+                  <span
+                    className={classNames({
+                      "text-lg font-medium": isMobile,
+                    })}
+                  >{`${name}${isMobile ? "" : `(${company})`}`}</span>
                 </h5>
-                <div className="project-time">{time}</div>
-                <div className="project-profile" title="profile">
+                <div
+                  className={classNames("project-time", {
+                    "!mb-1 text-center !text-base": isMobile,
+                  })}
+                >
+                  {time}
+                </div>
+                <div
+                  className={classNames("project-profile", {
+                    "!mb-1 !text-sm": isMobile,
+                  })}
+                  title={profile}
+                >
                   {profile}
                 </div>
                 <ul className="project-duties">
                   {duties.map((duty) => {
                     return (
-                      <li className="project-duty" key={duty}>
+                      <li
+                        className={classNames("project-duty", {
+                          "!text-xs": isMobile,
+                        })}
+                        key={duty}
+                      >
                         {duty}
                       </li>
                     );
@@ -88,7 +135,14 @@ export default function ResumeProject({ isMobile }: IResumeProjectProps) {
                 </ul>
               </div>
             </div>
-            <ul className="project-actions-wrapper absolute bottom-0 left-0 flex h-0 w-full overflow-y-hidden opacity-0 transition-all group-hover:h-[36px] group-hover:opacity-100">
+            <ul
+              className={classNames(
+                "project-actions-wrapper absolute bottom-0 left-0 flex h-0 w-full overflow-y-hidden opacity-0 transition-all group-hover:h-[36px] group-hover:opacity-100",
+                {
+                  "!h-auto !opacity-100": isMobile,
+                }
+              )}
+            >
               <li className="project-action">
                 <a
                   className="project-link"
@@ -131,12 +185,30 @@ export default function ResumeProject({ isMobile }: IResumeProjectProps) {
         <h2 className="title">项目经历</h2>
       </div>
 
-      <div className="projects-wrapper">
-        <Swiper
-          className="!w-[100vw]"
-          slideClassName="!w-[750px] rounded-md overflow-hidden"
-          slides={renderSlides()}
-        />
+      <div
+        className={classNames("projects-wrapper", {
+          "!h-[80vh] !w-full": isMobile,
+        })}
+      >
+        {isMobile ? (
+          <Carousel3d
+            className="h-full w-full"
+            childMaxLength={projectsLength}
+            z={540}
+            blurIncrease={3}
+          >
+            {renderSlides()}
+          </Carousel3d>
+        ) : (
+          <Swiper
+            className="!w-[100vw]"
+            slideClassName={classNames("rounded-md overflow-hidden", {
+              "!w-[750px]": !isMobile,
+              "!w-[80vw]": isMobile,
+            })}
+            slides={renderSlides()}
+          />
+        )}
         {/* <Carousel
           className="projects-carousel"
           effect={isMobile ? "scrollx" : "fade"}

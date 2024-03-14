@@ -1,20 +1,27 @@
 "use client";
 
+import classNames from "classnames";
 import throttle from "lodash/throttle";
-import React, { useCallback, useRef, useState } from "react";
+import React, { ReactElement, useCallback, useRef, useState } from "react";
 
 import { Carousel } from "@/components";
+import Carousel3d from "@/components/Carousel3d";
 import * as Constants from "@/constants";
+import useMobile from "@/hooks/useMobile";
 import { isSafari } from "@/utils/platform";
 import { getRoutePrefix } from "@/utils/route";
 
-export interface IResumeExperienceProps {
-  isMobile: boolean;
-}
+// export interface IResumeExperienceProps {
+//   isMobile: boolean;
+// }
 
-export default function ResumeExperience({ isMobile }: IResumeExperienceProps) {
+export default function ResumeExperience() {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
+
+  const isMobile = useMobile();
+
+  const experiencesLength = Constants.Experiences.length;
 
   const experienceRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +42,7 @@ export default function ResumeExperience({ isMobile }: IResumeExperienceProps) {
       const diffTop = event.clientY - experienceRef.current!.offsetTop;
       setThrottleRotates(diffLeft, diffTop);
     },
-    [isMobile]
+    [isMobile, setThrottleRotates]
   );
 
   const onMouseLeave = useCallback(() => {
@@ -47,6 +54,82 @@ export default function ResumeExperience({ isMobile }: IResumeExperienceProps) {
     setRotateY(0);
   }, [isMobile]);
 
+  const renderExperiences = (): ReactElement[] => {
+    return Constants.Experiences.map((experience) => {
+      const { company, time, post, works, image } = experience;
+      return (
+        <div
+          className={classNames("experience-wrapper bg-white", {
+            "min-h-[512px]": isMobile,
+          })}
+          key={company}
+          style={{
+            transform: `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`,
+          }}
+        >
+          <div
+            className={classNames("experience-item", {
+              "flex flex-col": isMobile,
+            })}
+          >
+            <div
+              className={classNames("experience-image-wrapper", {
+                "!w-full": isMobile,
+              })}
+            >
+              <img
+                className="company-image"
+                src={getRoutePrefix() + image}
+                alt="Company"
+              />
+            </div>
+            <div
+              className={classNames("experience-content-wrapper", {
+                "!px-4": isMobile,
+              })}
+            >
+              <h5
+                className={classNames("company-name", {
+                  "!mb-2 text-center !text-xl": isMobile,
+                })}
+              >
+                {company}
+              </h5>
+              <div
+                className={classNames("company-time", {
+                  "!mb-1 text-center !text-lg": isMobile,
+                })}
+              >
+                {time}
+              </div>
+              <div
+                className={classNames("company-post", {
+                  "!mb-1 text-center !text-lg": isMobile,
+                })}
+              >
+                {post}
+              </div>
+              <ul className="company-works">
+                {works.map((work) => {
+                  return (
+                    <li
+                      className={classNames("company-work", {
+                        "!text-base": isMobile,
+                      })}
+                      key={work}
+                    >
+                      {work}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="resume-experience-wrapper">
       <div className="title-wrapper">
@@ -54,55 +137,33 @@ export default function ResumeExperience({ isMobile }: IResumeExperienceProps) {
       </div>
 
       <div
-        className="experiences-wrapper"
+        className={classNames("experiences-wrapper", {
+          "!h-[60vh] !w-full": isMobile,
+        })}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         ref={experienceRef}
       >
-        <Carousel
-          className="experiences-carousel"
-          effect="scrollx"
-          isMobile={isMobile}
-          allowArrow
-          dots={!isMobile}
-        >
-          {Constants.Experiences.map((experience) => {
-            const { company, time, post, works, image } = experience;
-            return (
-              <div
-                className="experience-wrapper"
-                key={company}
-                style={{
-                  transform: `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`,
-                }}
-              >
-                <div className="experience-item">
-                  <div className="experience-image-wrapper">
-                    <img
-                      className="company-image"
-                      src={getRoutePrefix() + image}
-                      alt="Company"
-                    />
-                  </div>
-                  <div className="experience-content-wrapper">
-                    <h5 className="company-name">{company}</h5>
-                    <div className="company-time">{time}</div>
-                    <div className="company-post">{post}</div>
-                    <ul className="company-works">
-                      {works.map((work) => {
-                        return (
-                          <li className="company-work" key={work}>
-                            {work}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </Carousel>
+        {isMobile ? (
+          <Carousel3d
+            className="h-full w-full"
+            childMaxLength={experiencesLength}
+            z={540}
+            blurIncrease={3}
+          >
+            {renderExperiences()}
+          </Carousel3d>
+        ) : (
+          <Carousel
+            className="experiences-carousel"
+            effect="scrollx"
+            isMobile={isMobile}
+            allowArrow
+            dots={!isMobile}
+          >
+            {renderExperiences()}
+          </Carousel>
+        )}
       </div>
     </div>
   );
