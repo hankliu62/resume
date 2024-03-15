@@ -49,7 +49,7 @@ const Options = {
   arrowNavigation: true, // use arrow keys
   className: "resume-properties-section-container", // the class name for the section container
   delay: 1000, // the scroll animation speed
-  navigation: true, // use dots navigatio
+  navigation: false, // use dots navigatio
   scrollBar: false, // use the browser default scrollbar
   sectionClassName: "resume-properties-section resume-section-container", // the section class name
   sectionPaddingTop: "0", // the section top padding
@@ -110,7 +110,7 @@ export default function Resume() {
             <SectionsContainer {...options}>
               <Section>
                 <div className="section resume-section resume-section-index">
-                  <ResumeIndex isMobile={isMobile} />
+                  <ResumeIndex />
                 </div>
               </Section>
               <Section>
@@ -120,12 +120,12 @@ export default function Resume() {
                     backgroundImage: `url(${getRoutePrefix()}/images/resume/background.png)`,
                   }}
                 >
-                  <ResumeIntroduction isMobile={isMobile} />
+                  <ResumeIntroduction />
                 </div>
               </Section>
               <Section>
                 <div className="section resume-section resume-section-skill">
-                  <ResumeSkill isMobile={isMobile} />
+                  <ResumeSkill />
                 </div>
               </Section>
               <Section>
@@ -135,17 +135,17 @@ export default function Resume() {
                     backgroundImage: `url(${getRoutePrefix()}/images/resume/background.png)`,
                   }}
                 >
-                  <ResumeExperience isMobile={isMobile} />
+                  <ResumeExperience />
                 </div>
               </Section>
               <Section>
                 <div className="section resume-section resume-section-project overflow-x-hidden">
-                  <ResumeProject isMobile={isMobile} />
+                  <ResumeProject />
                 </div>
               </Section>
               <Section>
                 <div className="section resume-section resume-section-article">
-                  <ResumeArticle isMobile={isMobile} />
+                  <ResumeArticle />
                 </div>
               </Section>
             </SectionsContainer>

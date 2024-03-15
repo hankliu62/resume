@@ -5,16 +5,33 @@
 @social-accounts-length: length(@social-accounts);
 
 .resume-index-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @lineWidth: 130px; // 椭圆x轴半径(长半径)
+  @lineHeight: 45px; // 椭圆y轴半径(短半径)
+  @pointRadius: 8px; // 球半径
+  @count: 150; // 坐标点的数目(数目越大，动画越精细)
 
-  .avatar-wrapper {
-    .avatar {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      box-shadow: 0 5px 10px @black-10;
+  .rotating-ellipse {
+    width: @lineWidth * 2;
+    height: @lineHeight * 2;
+
+    .point {
+      left: @lineWidth - @pointRadius - 2px;
+      top: @lineHeight - @pointRadius - 2px;
+      width: @pointRadius * 2;
+      height: @pointRadius * 2;
+    }
+
+    @keyframes rotate-spin {
+      each(range(@count), {
+        @progress: (@value / @count);
+        @keyframePercent: @progress * 100%;
+        @translateX: @lineWidth * cos(360deg * @progress);
+        @translateY: @lineHeight * sin(360deg * @progress);
+
+        @{keyframePercent} {
+          transform: translate(@translateX, @translateY);
+        }
+      });
     }
   }
 
@@ -30,7 +47,6 @@
     .signature {
       margin-top: 20px;
       font-size: 18px;
-      color: @gray-77;
     }
   }
 
@@ -91,7 +107,7 @@
               font-size: 36px;
 
               path {
-                fill: @gray-88;
+                fill: @gray-cc;
                 transition: all .3s ease;
               }
             }
