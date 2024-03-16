@@ -89,7 +89,7 @@ export default function ResumeArticle() {
       </div>
       <div
         className={classNames("resume-article-content", {
-          "!w-full px-6": isMobile,
+          "flex !w-full flex-col-reverse px-6": isMobile,
         })}
       >
         <div
@@ -122,7 +122,11 @@ export default function ResumeArticle() {
           </div>
         </div>
 
-        {!isMobile && (
+        <div
+          className={classNames({
+            "flex h-52 justify-center": isMobile,
+          })}
+        >
           <div className="contenedor" ref={contenedor}>
             <ul
               className="cube animar"
@@ -130,8 +134,8 @@ export default function ResumeArticle() {
               // style={{
               //   transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
               // }}
-              onMouseMove={onCubeMouseMove}
-              onMouseLeave={onCubeMouseLeave}
+              onMouseMove={isMobile ? () => {} : onCubeMouseMove}
+              onMouseLeave={isMobile ? () => {} : onCubeMouseLeave}
             >
               <li className="cara">
                 <svg
@@ -183,7 +187,7 @@ export default function ResumeArticle() {
               <li className="cara">Q</li>
             </ul>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

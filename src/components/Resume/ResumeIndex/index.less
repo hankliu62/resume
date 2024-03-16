@@ -8,7 +8,7 @@
   @lineWidth: 130px; // 椭圆x轴半径(长半径)
   @lineHeight: 45px; // 椭圆y轴半径(短半径)
   @pointRadius: 8px; // 球半径
-  @count: 150; // 坐标点的数目(数目越大，动画越精细)
+  @count: 100; // 坐标点的数目(数目越大，动画越精细)
 
   .rotating-ellipse {
     width: @lineWidth * 2;
@@ -19,6 +19,10 @@
       top: @lineHeight - @pointRadius - 2px;
       width: @pointRadius * 2;
       height: @pointRadius * 2;
+
+      @translateX: @lineWidth * cos(360deg);
+      @translateY: @lineHeight * sin(360deg);
+      transform: translate(@translateX, @translateY);
     }
 
     @keyframes rotate-spin {

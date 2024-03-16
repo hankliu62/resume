@@ -10,6 +10,7 @@ import React, { useState } from "react";
 
 import { Carousel, MessageModal, QrcodeModal } from "@/components";
 import Carousel3d from "@/components/Carousel3d";
+import CarouselThreeD from "@/components/CarouselThreeD";
 import Swiper from "@/components/Swiper";
 import * as Constants from "@/constants";
 import useMobile from "@/hooks/useMobile";
@@ -180,36 +181,58 @@ export default function ResumeProject() {
   };
 
   return (
-    <div className="resume-project-wrapper">
-      <div className="title-wrapper">
-        <h2 className="title">项目经历</h2>
+    <div className="resume-project-wrapper relative h-[100vh] w-full">
+      <div
+        className="absolute left-0 top-0 z-0 h-full w-full bg-[linear-gradient(270deg,_#283048,_#859398)] bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${getRoutePrefix()}/images/resume/projects/banner.jpg)`,
+        }}
+      >
+        <div
+          className="absolute left-0 top-0 h-full w-full bg-[linear-gradient(to_right,_#fafafa,_#aaa)]"
+          style={{
+            mixBlendMode: "multiply",
+            inset: 0,
+          }}
+        />
       </div>
 
       <div
-        className={classNames("projects-wrapper", {
-          "!h-[80vh] !w-full": isMobile,
-        })}
-      >
-        {isMobile ? (
-          <Carousel3d
-            className="h-full w-full"
-            childMaxLength={projectsLength}
-            z={540}
-            blurIncrease={3}
-          >
-            {renderSlides()}
-          </Carousel3d>
-        ) : (
-          <Swiper
-            className="!w-[100vw]"
-            slideClassName={classNames("rounded-md overflow-hidden", {
-              "!w-[750px]": !isMobile,
-              "!w-[80vw]": isMobile,
-            })}
-            slides={renderSlides()}
-          />
+        className={classNames(
+          "relative z-10 flex h-full flex-col items-center justify-center",
+          {
+            "!w-full": isMobile,
+          }
         )}
-        {/* <Carousel
+      >
+        <div className="title-wrapper">
+          <h2 className="title">项目经历</h2>
+        </div>
+
+        <div
+          className={classNames("projects-wrapper", {
+            "!h-[80vh] !w-full": isMobile,
+          })}
+        >
+          {isMobile ? (
+            <Carousel3d
+              childMaxLength={projectsLength}
+              z={540}
+              blurIncrease={3}
+            >
+              {renderSlides()}
+            </Carousel3d>
+          ) : (
+            <Swiper
+              className="!w-[100vw]"
+              slideClassName={classNames("rounded-md overflow-hidden", {
+                "!w-[750px]": !isMobile,
+                "!w-[80vw]": isMobile,
+              })}
+              slides={renderSlides()}
+            />
+          )}
+          {/* <Carousel
           className="projects-carousel"
           effect={isMobile ? "scrollx" : "fade"}
           isMobile={isMobile}
@@ -218,6 +241,7 @@ export default function ResumeProject() {
         >
           {renderSlides()}
         </Carousel> */}
+        </div>
       </div>
 
       <QrcodeModal

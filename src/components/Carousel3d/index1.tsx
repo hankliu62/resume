@@ -1,166 +1,204 @@
-import PropTypes from 'prop-types';
-import carouselStyles from './index.less';
-import React from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import classNames from "classnames";
+import React, {
+  CSSProperties,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+interface ICarousel3dProps {
+  children: ReactElement[];
+  style: Partial<CSSProperties>;
+  className: string;
+  onChange: (arg: {
+    current: number;
+    rotate: number;
+    eventType: string;
+  }) => void;
+  tilt: string;
+  duration: string;
+  ease: string;
+  blurIncrease: number;
+  opacityDecline: number;
+  opacityBasics: number;
+  moveRange: number;
+  childMaxLength: number;
+  perspective: number;
+  z: number;
+  defaultCurrent: number;
+}
 
 // const currentDpr = window.devicePixelRatio;
 // const defaultDpr = 2; // sketch 里用的是 iphone 6 尺寸;
 const dpr = 0.5; // currentDpr / defaultDpr;
 
-class Carousel3d extends React.PureComponent {
-  static propTypes = {
-    children: PropTypes.any,
-    style: PropTypes.object,
-    className: PropTypes.string,
-    onChange: PropTypes.func,
-    tilt: PropTypes.string,
-    duration: PropTypes.string,
-    ease: PropTypes.string,
-    blurIncrease: PropTypes.number,
-    opacityDecline: PropTypes.number,
-    opacityBasics: PropTypes.number,
-    moveRange: PropTypes.number,
-    childMaxLength: PropTypes.number,
-    perspective: PropTypes.number,
-    z: PropTypes.number,
-    current: PropTypes.number,
-  };
-  static defaultProps = {
-    onChange: () => {},
-    tilt: '15rem',
-    duration: '.45s',
-    ease: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
-    blurIncrease: 8,
-    opacityDecline: 0.1,
-    opacityBasics: 0.5,
-    moveRange: 2,
-    childMaxLength: 6,
-    perspective: 2800,
-    z: 800,
-    current: 0,
-  };
-  constructor(props) {
-    super(props);
-    this.setLengthAndAngle(props);
-    this.state = {
-      rotate: -props.current * this.angle,
-      current: props.current,
-      transition: 'none',
-    };
-  }
-  componentDidMount() {
-    this.w = document.body.clientWidth;
-    window.addEventListener('mouseup', this.onTouchEnd);
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
-      const { current, children } = this.props;
-      if (
-        (current !== this.state.current && current !== prevProps.current) ||
-        React.Children.toArray(children).length !==
-          React.Children.toArray(prevProps.children).length
-      ) {
-        this.setLengthAndAngle(this.props);
-        // eslint-disable-next-line
-        this.setState({
-          current: this.props.current,
-          rotate: -this.props.current * this.angle,
-          transition: `transform ${this.props.duration} ${this.props.ease}`,
-        });
-      }
-    }
-  }
+const DefaultWidth = 360;
 
-  onTouchStart = (e) => {
-    if ((e.touches && e.touches.length > 1) || this.length <= 1) {
-      return;
-    }
-    this.startX = e.pageX || e.touches[0].pageX;
-    this.startRotate = Math.round(this.state.rotate / this.angle) * this.angle; // 偏移修复;
-  };
-  onTouchMove = (e) => {
-    if (
-      (e.touches && e.touches.length > 1) ||
-      this.length <= 1 ||
-      !this.startX
-    ) {
-      return;
-    }
-    const x = e.pageX || e.touches[0].pageX;
-    const differ = (x - this.startX) * this.props.moveRange; // 幅度加大；
-    const rotate = this.startRotate + (differ / this.w) * this.angle;
-    const r =
-      (Math.abs(Math.ceil(this.state.rotate / 360)) * 360 - rotate) % 360;
-    const current = Math.round(r / this.angle) % this.length;
-    this.setState(
-      {
-        rotate,
+export default function Carousel3d({
+  onChange = () => {},
+  className,
+  tilt = "15rem",
+  duration = ".45s",
+  ease = "cubic-bezier(0.215, 0.61, 0.355, 1)",
+  blurIncrease = 8,
+  opacityDecline = 0.1,
+  opacityBasics = 0.5,
+  moveRange = 2,
+  childMaxLength = 6,
+  perspective = 2800,
+  z = 800,
+  defaultCurrent = 0,
+  children,
+  style = {},
+}: Partial<ICarousel3dProps>) {
+  const zDpr = useMemo<number>(() => z * dpr, [z]);
+  const perspectiveDpr = useMemo<number>(
+    () => perspective * dpr,
+    [perspective]
+  );
+
+  // 子元素长度
+  const childrenLength = useMemo<number>(
+    () => Math.max(React.Children.toArray(children).length, childMaxLength),
+    [childMaxLength, children]
+  );
+  // 偏移量
+  const angle = useMemo<number>(
+    () => DefaultWidth / childrenLength,
+    [childrenLength]
+  );
+  // body的长度
+  const clientWidth = useRef<number>(0);
+
+  // 旋转值
+  const [rotate, setRotate] = useState<number>(-defaultCurrent * angle);
+  // 偏移值
+  const [transition, setTransition] = useState<string>("none");
+  // 当前选择的节点
+  const [current, setCurrent] = useState<number>(defaultCurrent);
+
+  const startX = useRef<number>(0);
+
+  const startRotate = useMemo<number>(
+    () => Math.round(rotate / angle) * angle,
+    [rotate, angle]
+  );
+
+  useEffect(() => {
+    clientWidth.current = document.body.clientWidth;
+  }, []);
+
+  useEffect(() => {
+    setCurrent(defaultCurrent);
+    setRotate(-defaultCurrent * angle);
+  }, [angle, defaultCurrent]);
+
+  useEffect(() => {
+    setTransition(`transform ${duration} ${ease}`);
+  }, [duration, ease]);
+
+  const onChangeEvent = useCallback(
+    (
+      eventType: "move" | "end",
+      data: {
+        current?: number;
+        rotate?: number;
+      }
+    ) => {
+      onChange({
         current,
-        transition: 'none',
-      },
-      () => {
-        this.props.onChange({
-          current,
-          rotate,
-          eventType: 'move',
-        });
-      },
-    );
-  };
-  onTouchEnd = (e) => {
-    if (
-      (e.changedTouches && e.changedTouches.length > 1) ||
-      this.length <= 1 ||
-      !this.startX
-    ) {
-      return;
-    }
-    const x = e.pageX || e.changedTouches[0].pageX;
-    const differ = x - this.startX;
-    const { current, rotate } = this.state;
-    const n = differ > 0 ? 1 : -1;
-    const newRotate =
-      this.startRotate +
-      n *
-        this.angle *
-        Math.round(Math.abs((rotate - this.startRotate) / this.angle));
-    this.setState(
-      {
+        rotate,
+        eventType,
+        ...data,
+      });
+    },
+    [current, onChange, rotate]
+  );
+
+  const onTouchStart = useCallback(
+    (e: MouseEvent & TouchEvent) => {
+      if ((e.touches && e.touches.length > 1) || childrenLength <= 1) {
+        return;
+      }
+      startX.current = e.pageX || e.touches[0].pageX;
+    },
+    [childrenLength]
+  );
+
+  const onTouchMove = useCallback(
+    (e: MouseEvent & TouchEvent) => {
+      if (
+        (e.touches && e.touches.length > 1) ||
+        childrenLength <= 1 ||
+        !startX.current
+      ) {
+        return;
+      }
+      const x = e.pageX || e.touches[0].pageX;
+      const differ = (x - startX.current) * moveRange; // 幅度加大；
+      const rotate = startRotate + (differ / clientWidth.current) * angle;
+      const r =
+        (Math.abs(Math.ceil(rotate / DefaultWidth)) * DefaultWidth - rotate) %
+        DefaultWidth;
+      const current = Math.round(r / angle) % childrenLength;
+
+      console.log("onTouchMove", current);
+
+      setRotate(rotate);
+      setCurrent(current);
+      setTransition("none");
+
+      onChangeEvent("move", {
+        current,
+        rotate,
+      });
+    },
+    [angle, childrenLength, moveRange, onChangeEvent, startRotate]
+  );
+
+  const onTouchEnd = useCallback(
+    (e: MouseEvent & TouchEvent) => {
+      if (
+        (e.changedTouches && e.changedTouches.length > 1) ||
+        childrenLength <= 1 ||
+        !startX.current
+      ) {
+        return;
+      }
+      const x = e.pageX || e.changedTouches[0].pageX;
+      const differ = x - startX.current;
+      const n = differ > 0 ? 1 : -1;
+      const newRotate =
+        startRotate +
+        n * angle * Math.round(Math.abs((rotate - startRotate) / angle));
+
+      setRotate(newRotate);
+
+      startX.current = 0;
+      onChangeEvent("end", {
         rotate: newRotate,
-        transition: `transform ${this.props.duration} ${this.props.ease}`,
-      },
-      () => {
-        this.startX = null;
-        this.props.onChange({
-          current,
-          rotate: newRotate,
-          eventType: 'end',
-        });
-      },
-    );
-  };
-  setLengthAndAngle = (props) => {
-    this.length = React.Children.toArray(props.children).length;
-    this.length =
-      this.length > props.childMaxLength ? props.childMaxLength : this.length;
-    this.angle = 360 / this.length;
-  };
-  getAnimStyle = (n, length) => {
-    const { opacityBasics, opacityDecline, blurIncrease } = this.props;
-    const center = length / 2;
-    const i = n > center ? center * 2 - n : n;
-    let opacity = 1 - ((i - 1) * opacityDecline + opacityBasics * (n ? 1 : 0));
-    opacity = opacity < 0.1 ? 0.1 : opacity;
-    const d = {
-      opacity,
+      });
+    },
+    [angle, childrenLength, onChangeEvent, rotate, startRotate]
+  );
+
+  useEffect(() => {
+    window.addEventListener("mouseup", onTouchEnd as any);
+
+    return () => {
+      window.removeEventListener("mouseup", onTouchEnd as any);
     };
-    if (blurIncrease) {
-      d.filter = `blur(${i * blurIncrease}px)`;
-    }
-    return d;
-  };
-  getChildrenToRender = (children) => {
-    const { childMaxLength, z } = this.props;
-    const newChildren = React.Children.toArray(children);
+  }, [onTouchEnd]);
+
+  /**
+   * 渲染子元素
+   */
+  const renderChildren = () => {
+    const newChildren = React.Children.toArray(children) as ReactElement[];
     const length = newChildren.length;
     const zDpr = z * dpr;
     return newChildren.map((item, i) => {
@@ -168,38 +206,44 @@ class Carousel3d extends React.PureComponent {
         return null;
       }
       const transform = `rotateY(${
-        this.angle * i
-      }deg) translateZ(${zDpr}px) rotateY(-${this.angle * i}deg) `;
-      const animStyle = this.getAnimStyle(
-        Math.abs(this.state.current - i),
-        length > childMaxLength ? childMaxLength : length,
-      );
-      const style = {
-        transform,
-        // opacity: animStyle.opacity, 留坑，preserve-3d 不可以与 opacity 同时使用，排查了一下午
+        angle * i
+      }deg) translateZ(${zDpr}px) rotateY(-${angle * i}deg) `;
+
+      const diffPosition = Math.abs(current - i);
+
+      const center = Math.min(childMaxLength, length) / 2;
+      const index =
+        diffPosition > center ? center * 2 - diffPosition : diffPosition;
+      let opacity =
+        1 -
+        ((index - 1) * opacityDecline + opacityBasics * (diffPosition ? 1 : 0));
+      opacity = opacity < 0.1 ? 0.1 : opacity;
+      const animStyle: CSSProperties = {
+        opacity,
       };
+      if (blurIncrease) {
+        animStyle.filter = `blur(${index * blurIncrease}px)`;
+      }
       return (
         <div
-          className={carouselStyles.itemWrapper}
+          className="absolute left-0 top-0"
           key={item.key}
-          style={style}
+          style={{
+            transformStyle: "preserve-3d",
+            transform,
+          }}
         >
           <div
-            className={carouselStyles.rotateLayer}
             style={{
-              transform: `rotateY(${-this.state.rotate}deg)`,
-              transition: this.state.transition,
+              transform: `rotateY(${-rotate}deg)`,
+              transition: transition,
             }}
           >
             <div
-              className={carouselStyles.bgAndBlurLayer}
+              className="m-auto overflow-hidden rounded-lg transition-[filter] duration-[0.45s]"
               style={{ ...animStyle }}
             >
-              {/* transform 与 filter 的距阵冲突，图层分离 */}
-              <div
-                className={carouselStyles.contentLayer}
-                style={{ opacity: this.state.current === i ? 1 : 1 }}
-              >
+              <div className="transition-[opacity] duration-[0.65s]">
                 {item}
               </div>
             </div>
@@ -208,60 +252,42 @@ class Carousel3d extends React.PureComponent {
       );
     });
   };
-  render() {
-    const { onChange, ...props } = this.props;
-    const { children, tilt, style, z, perspective } = props;
-    const zDpr = z * dpr;
-    const perspectiveDpr = perspective * dpr;
-    const childrenToRender = this.getChildrenToRender(children, perspective);
-    [
-      'tilt',
-      'duration',
-      'ease',
-      'blurIncrease',
-      'opacityDecline',
-      'opacityBasics',
-      'moveRange',
-      'childMaxLength',
-      'perspective',
-      'z',
-      'current',
-    ].forEach((k) => delete props[k]);
-    return (
-      <div
-        {...props}
-        onTouchStart={this.onTouchStart}
-        onMouseDown={this.onTouchStart}
-        onTouchMove={this.onTouchMove}
-        onMouseMove={this.onTouchMove}
-        onTouchEnd={this.onTouchEnd}
-        onMouseUp={this.onTouchEnd}
-      >
-        <div className={carouselStyles.carouselWrapper}>
+
+  return (
+    <div
+      onTouchStart={onTouchStart as any}
+      onMouseDown={onTouchStart as any}
+      onTouchMove={onTouchMove as any}
+      onMouseMove={onTouchMove as any}
+      onTouchEnd={onTouchEnd as any}
+      onMouseUp={onTouchEnd as any}
+      className={classNames("relative h-full w-full", {
+        [className!]: className,
+      })}
+    >
+      <div className="absolute left-0 right-0 m-auto h-[80vh] w-[60vw]">
+        <div
+          className="relative m-auto h-full w-full"
+          style={{
+            ...style,
+            perspective: perspectiveDpr,
+            transform: `translateY(-${tilt}) scale(${
+              (perspectiveDpr - zDpr) / perspectiveDpr
+            })`,
+          }}
+        >
           <div
-            className={carouselStyles.carousel}
+            className="w-full"
             style={{
-              ...style,
-              perspective: perspectiveDpr,
-              transform: `translateY(-${tilt}) scale(${
-                (perspectiveDpr - zDpr) / perspectiveDpr
-              })`,
+              transformStyle: "preserve-3d",
+              transform: `translateY(${tilt}) rotateY(${rotate}deg)`,
+              transition: transition,
             }}
           >
-            <div
-              className={carouselStyles.carouselContent}
-              style={{
-                transform: `translateY(${tilt}) rotateY(${this.state.rotate}deg)`,
-                transition: this.state.transition,
-              }}
-            >
-              {childrenToRender}
-            </div>
+            {renderChildren()}
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default Carousel3d;

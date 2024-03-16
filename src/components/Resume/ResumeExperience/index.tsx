@@ -131,39 +131,62 @@ export default function ResumeExperience() {
   };
 
   return (
-    <div className="resume-experience-wrapper">
-      <div className="title-wrapper">
-        <h1 className="title">工作经历</h1>
+    <div className="resume-experience-wrapper relative h-[100vh] w-full">
+      <div
+        className="absolute left-0 top-0 z-0 h-full w-full bg-[#4d5e8f] bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${getRoutePrefix()}/images/resume/experiences/banner.jpg)`,
+        }}
+      >
+        <div
+          className="absolute left-0 top-0 h-full w-full bg-[linear-gradient(to_right,_#fafafa,_#aaa)]"
+          style={{
+            mixBlendMode: "multiply",
+            inset: 0,
+          }}
+        />
       </div>
 
       <div
-        className={classNames("experiences-wrapper", {
-          "!h-[60vh] !w-full": isMobile,
-        })}
-        onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
-        ref={experienceRef}
-      >
-        {isMobile ? (
-          <Carousel3d
-            className="h-full w-full"
-            childMaxLength={experiencesLength}
-            z={540}
-            blurIncrease={3}
-          >
-            {renderExperiences()}
-          </Carousel3d>
-        ) : (
-          <Carousel
-            className="experiences-carousel"
-            effect="scrollx"
-            isMobile={isMobile}
-            allowArrow
-            dots={!isMobile}
-          >
-            {renderExperiences()}
-          </Carousel>
+        className={classNames(
+          "relative z-10 flex h-full flex-col items-center justify-center",
+          {
+            "!w-full": isMobile,
+          }
         )}
+      >
+        <div className="title-wrapper">
+          <h1 className="title">工作经历</h1>
+        </div>
+
+        <div
+          className={classNames("experiences-wrapper", {
+            "!h-[60vh] !w-full": isMobile,
+          })}
+          onMouseMove={onMouseMove}
+          onMouseLeave={onMouseLeave}
+          ref={experienceRef}
+        >
+          {isMobile ? (
+            <Carousel3d
+              childMaxLength={experiencesLength}
+              z={540}
+              blurIncrease={3}
+            >
+              {renderExperiences()}
+            </Carousel3d>
+          ) : (
+            <Carousel
+              className="experiences-carousel"
+              effect="scrollx"
+              isMobile={isMobile}
+              allowArrow
+              dots={!isMobile}
+            >
+              {renderExperiences()}
+            </Carousel>
+          )}
+        </div>
       </div>
     </div>
   );

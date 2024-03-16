@@ -66,6 +66,7 @@ export default function Carousel3d({
 
   // 旋转值
   const [rotate, setRotate] = useState<number>(-defaultCurrent * angle.current);
+  const currentRotate = useRef<number>(-defaultCurrent * angle.current);
   // 偏移值
   const [transition, setTransition] = useState<string>("none");
   // 当前选择的节点
@@ -86,6 +87,7 @@ export default function Carousel3d({
     angle.current = 360 / childrenLength.current;
     setCurrent(defaultCurrent);
     setRotate(-defaultCurrent * angle.current);
+    currentRotate.current = -defaultCurrent * angle.current;
   }, [childMaxLength, children, defaultCurrent]);
 
   useEffect(() => {
@@ -116,6 +118,7 @@ export default function Carousel3d({
     const current = Math.round(r / angle.current) % childrenLength.current;
 
     setRotate(rotate);
+    currentRotate.current = rotate;
     setCurrent(current);
     setTransition("none");
 
@@ -144,7 +147,12 @@ export default function Carousel3d({
           angle.current *
           Math.round(Math.abs((rotate - startRotate.current) / angle.current));
 
+      // const r = (Math.abs(Math.ceil(newRotate / 360)) * 360 - newRotate) % 360;
+      // const current = Math.round(r / angle.current) % childrenLength.current;
+
       setRotate(newRotate);
+      currentRotate.current = newRotate;
+      // setCurrent(current);
       setTransition(`transform ${duration} ${ease}`);
       startX.current = 0;
       onChange({
@@ -184,23 +192,27 @@ export default function Carousel3d({
       const center = (childMaxLength ?? length) / 2;
       const index =
         diffPosition > center ? center * 2 - diffPosition : diffPosition;
-      let opacity =
+      const opacity = Math.max(
+        0.1,
         1 -
-        ((index - 1) * opacityDecline + opacityBasics * (diffPosition ? 1 : 0));
-      opacity = opacity < 0.1 ? 0.1 : opacity;
+          ((index - 1) * opacityDecline +
+            opacityBasics * (diffPosition ? 1 : 0))
+      );
       const animStyle: CSSProperties = {
         opacity,
       };
       if (blurIncrease) {
         animStyle.filter = `blur(${index * blurIncrease}px)`;
       }
-      const style: CSSProperties = {
-        transformStyle: "preserve-3d",
-        transform,
-        // opacity: animStyle.opacity, 留坑，preserve-3d 不可以与 opacity 同时使用，排查了一下午
-      };
       return (
-        <div className="absolute left-0 top-0" key={item.key} style={style}>
+        <div
+          className="absolute left-0 top-0"
+          key={item.key}
+          style={{
+            transformStyle: "preserve-3d",
+            transform,
+          }}
+        >
           <div
             style={{
               transform: `rotateY(${-rotate}deg)`,
@@ -208,14 +220,11 @@ export default function Carousel3d({
             }}
           >
             <div
-              className="m-auto overflow-hidden rounded-lg transition-[filter_0.45s]"
+              className="m-auto overflow-hidden rounded-lg transition-[filter] duration-[0.45s]"
               style={{ ...animStyle }}
             >
               {/* transform 与 filter 的距阵冲突，图层分离 */}
-              <div
-                className="transition-[opacity_0.65s]"
-                style={{ opacity: current === i ? 1 : 1 }}
-              >
+              <div className="transition-[opacity] duration-[0.65s]">
                 {item}
               </div>
             </div>
@@ -237,7 +246,7 @@ export default function Carousel3d({
         [className!]: className,
       })}
     >
-      <div className="absolute left-0 m-auto h-[80vh] w-[60vw]">
+      <div className="absolute left-0 right-0 m-auto h-[80vh] w-[60vw]">
         <div
           className="relative m-auto h-full w-full"
           style={{
