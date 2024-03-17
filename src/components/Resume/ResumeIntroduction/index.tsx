@@ -36,7 +36,13 @@ export default function ResumeIntroduction() {
         )}
       >
         <div className="title-wrapper">
-          <h2 className="title">自我介绍</h2>
+          <h2
+            className={classNames("title", {
+              "!text-[2.5rem]": isMobile,
+            })}
+          >
+            自我介绍
+          </h2>
         </div>
 
         <div className="self-introduction-wrapper" data-aos="fade-up">

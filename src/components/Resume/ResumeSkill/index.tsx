@@ -81,7 +81,13 @@ export default function ResumeSkill() {
         )}
       >
         <div className="title-wrapper">
-          <h2 className="title">技能</h2>
+          <h2
+            className={classNames("title", {
+              "!text-[2.5rem]": isMobile,
+            })}
+          >
+            技能
+          </h2>
         </div>
 
         <div className="skills-wrapper">
@@ -90,7 +96,7 @@ export default function ResumeSkill() {
               "!flex justify-between": isMobile,
             })}
           >
-            {Constants.Skills.map((skill) => {
+            {Constants.Skills.map((skill, index) => {
               const { type, popover, percent, contexts } = skill;
               return (
                 <li
@@ -149,6 +155,19 @@ export default function ResumeSkill() {
                 </li>
               );
             })}
+            {!!(isMobile && Constants.Skills.length % 3 !== 0) &&
+              Array.from({ length: 3 - (Constants.Skills.length % 3) })
+                .fill("1")
+                .map((item, index) => (
+                  <li
+                    className={classNames("skill relative", {
+                      "!w-[33.3%]": isMobile,
+                    })}
+                    key={(item as string) + index}
+                  >
+                    <div className="h-28 w-28" />
+                  </li>
+                ))}
           </ul>
         </div>
       </div>

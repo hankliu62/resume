@@ -2,6 +2,7 @@
 import classNames from "classnames";
 import React, {
   CSSProperties,
+  memo,
   ReactElement,
   useCallback,
   useEffect,
@@ -36,7 +37,7 @@ interface ICarousel3dProps {
 // const defaultDpr = 2; // sketch 里用的是 iphone 6 尺寸;
 const dpr = 0.5; // currentDpr / defaultDpr;
 
-export default function Carousel3d({
+export default memo(function Carousel3d({
   onChange = () => {},
   className,
   tilt = "15rem",
@@ -224,7 +225,10 @@ export default function Carousel3d({
               style={{ ...animStyle }}
             >
               {/* transform 与 filter 的距阵冲突，图层分离 */}
-              <div className="transition-[opacity] duration-[0.65s]">
+              <div
+                className="transition-[opacity] duration-[0.65s]"
+                style={{ opacity: current === i ? 1 : 1 }}
+              >
                 {item}
               </div>
             </div>
@@ -246,7 +250,7 @@ export default function Carousel3d({
         [className!]: className,
       })}
     >
-      <div className="absolute left-0 right-0 m-auto h-[80vh] w-[60vw]">
+      <div className="absolute left-0 right-0 m-auto -mt-[360px] h-[80vh] w-[60vw] pt-[360px]">
         <div
           className="relative m-auto h-full w-full"
           style={{
@@ -271,4 +275,4 @@ export default function Carousel3d({
       </div>
     </div>
   );
-}
+});

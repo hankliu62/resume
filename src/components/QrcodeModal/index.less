@@ -1,7 +1,13 @@
 .qrcode-modal {
   .ant-modal-body {
-    padding: 10px;
-    font-size: 0;
+    font-size: 0 !important;
     border-radius: 5px;
+  }
+
+  &.mobile-qrcode-modal {
+    .ant-modal-body {
+      display: flex;
+      justify-content: center;
+    }
   }
 }

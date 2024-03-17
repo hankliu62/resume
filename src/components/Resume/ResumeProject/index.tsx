@@ -5,6 +5,7 @@ import {
   LinkOutlined,
   QrcodeOutlined,
 } from "@ant-design/icons";
+import { Modal } from "antd";
 import classNames from "classnames";
 import React, { useState } from "react";
 
@@ -16,6 +17,8 @@ import * as Constants from "@/constants";
 import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
 
+type TProject = (typeof Constants.Projects)[0];
+
 export default function ResumeProject() {
   const isMobile = useMobile();
 
@@ -25,6 +28,9 @@ export default function ResumeProject() {
   const [qrValue, setQrValue] = useState("");
   const [isVisibleSummary, setIsVisibleSummary] = useState(false);
   const [summary, setSummary] = useState("");
+
+  const [isVisibleProject, setIsVisibleProject] = useState(false);
+  const [project, setProject] = useState<TProject>();
 
   const onOpenVisibleQr = (qrValue: string) => {
     setQrValue(qrValue);
@@ -46,138 +52,185 @@ export default function ResumeProject() {
     setIsVisibleSummary(false);
   };
 
-  const renderSlides = () => {
-    return Constants.Projects.map((project) => {
-      const {
-        name,
-        company,
-        link,
-        time,
-        image,
-        duties,
-        profile,
-        summary: projectSummary,
-      } = project;
+  const onOpenVisibleProject = (project: TProject) => {
+    setProject(project);
+    setIsVisibleProject(true);
+  };
 
-      return (
-        <div
-          className={classNames(
-            "project-wrapper group relative overflow-hidden rounded-md bg-white py-[20px] shadow-[inset_0_0_10px_#ddd]",
-            {
-              "!h-[72vh] w-[62vw]": isMobile,
-              "!h-[450px] w-[750px]": !isMobile,
+  const onCloseVisibleProject = () => {
+    setProject(undefined);
+    setIsVisibleProject(false);
+  };
+
+  const renderSlide = (
+    project: (typeof Constants.Projects)[0],
+    preview?: boolean
+  ) => {
+    const {
+      name,
+      company,
+      link,
+      time,
+      image,
+      profile,
+      summary: projectSummary,
+    } = project;
+
+    const isInMobileCarousel = !preview && isMobile;
+    const duties = isInMobileCarousel ? project.duties : project.duties;
+
+    return (
+      <div
+        className={classNames(
+          "project-wrapper group relative overflow-hidden bg-white ",
+          {
+            "!h-[72vh] w-[62vw]": isInMobileCarousel,
+            "!h-[450px] w-[750px]": !isMobile,
+            "rounded-md shadow-[inset_0_0_10px_#ddd]": !isMobile || !preview,
+            "!h-full w-full": isMobile && preview,
+          }
+        )}
+        key={name + company}
+      >
+        <div className="project-item-wrapper pb-[20px]">
+          <div
+            className={classNames("project-item", {
+              "flex-col": isMobile,
+              "pt-[20px]": !isMobile || !preview,
+            })}
+            onClick={() =>
+              isInMobileCarousel ? onOpenVisibleProject(project) : null
             }
-          )}
-          key={name + company}
-        >
-          <div className="project-item-wrapper">
+            aria-hidden
+          >
             <div
-              className={classNames("project-item", {
-                "flex-col": isMobile,
+              className={classNames("project-image-wrapper", {
+                "!w-full": isMobile,
               })}
             >
-              <div
-                className={classNames("project-image-wrapper", {
-                  "!w-full": isMobile,
+              <img
+                className={classNames("project-image", {
+                  "mx-auto !mb-1 !h-16 !max-w-[60%]": isMobile,
+                })}
+                src={getRoutePrefix() + image}
+                alt="Project"
+              />
+            </div>
+            <div
+              className={classNames("project-content-wrapper", {
+                "!px-6": isInMobileCarousel,
+              })}
+            >
+              <h5
+                className={classNames("project-name", {
+                  "!mb-2 flex justify-center": isMobile,
                 })}
               >
-                <img
-                  className={classNames("project-image", {
-                    "!mb-1 !h-16": isMobile,
+                <span
+                  className={classNames({
+                    "text-lg font-medium": isMobile,
+                    truncate: isInMobileCarousel,
                   })}
-                  src={getRoutePrefix() + image}
-                  alt="Project"
-                />
+                >{`${name}${isMobile ? "" : `(${company})`}`}</span>
+              </h5>
+              <div
+                className={classNames("project-time", {
+                  "!mb-1 text-center !text-base": isMobile,
+                })}
+              >
+                {time}
               </div>
               <div
-                className={classNames("project-content-wrapper", {
-                  "!px-6": isMobile,
+                className={classNames("project-profile", {
+                  "!mb-1 !text-sm": isMobile,
+                  "line-clamp-5": isInMobileCarousel,
+                })}
+                title={profile}
+              >
+                {profile}
+              </div>
+              <ul
+                className={classNames("project-duties mb-0 list-decimal", {
+                  "pl-[20px]": !isMobile,
+                  "pl-5": isMobile,
                 })}
               >
-                <h5
-                  className={classNames("project-name", {
-                    "!mb-2 flex justify-center": isMobile,
-                  })}
-                >
-                  <span
-                    className={classNames({
-                      "text-lg font-medium": isMobile,
-                    })}
-                  >{`${name}${isMobile ? "" : `(${company})`}`}</span>
-                </h5>
-                <div
-                  className={classNames("project-time", {
-                    "!mb-1 text-center !text-base": isMobile,
-                  })}
-                >
-                  {time}
-                </div>
-                <div
-                  className={classNames("project-profile", {
-                    "!mb-1 !text-sm": isMobile,
-                  })}
-                  title={profile}
-                >
-                  {profile}
-                </div>
-                <ul className="project-duties">
-                  {duties.map((duty) => {
-                    return (
-                      <li
-                        className={classNames("project-duty", {
-                          "!text-xs": isMobile,
+                {duties.map((duty) => {
+                  return (
+                    <li
+                      className={classNames("project-duty", {
+                        "!text-sm": isMobile,
+                      })}
+                      key={duty}
+                    >
+                      <div
+                        className={classNames({
+                          "line-clamp-2": isInMobileCarousel,
                         })}
-                        key={duty}
                       >
                         {duty}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+                      </div>
+                    </li>
+                  );
+                })}
+                {/* {isInMobileCarousel && (
+                  <li
+                    className={classNames("project-duty", {
+                      "!text-xs": isMobile,
+                    })}
+                  >
+                    ...
+                  </li>
+                )} */}
+              </ul>
             </div>
-            <ul
-              className={classNames(
-                "project-actions-wrapper absolute bottom-0 left-0 flex h-0 w-full overflow-y-hidden opacity-0 transition-all group-hover:h-[36px] group-hover:opacity-100",
-                {
-                  "!h-auto !opacity-100": isMobile,
-                }
-              )}
-            >
-              <li className="project-action">
-                <a
-                  className="project-link"
-                  href={link}
-                  target="_blank"
-                  rel="noopener noreferrer external nofollow"
-                  title={`刘小聪的项目-${name}-链接地址`}
-                >
-                  <LinkOutlined type="link" />
-                </a>
-              </li>
-              <li className="project-action">
-                <QrcodeOutlined
-                  type="qrcode"
-                  onClick={() => {
-                    onOpenVisibleQr(link);
-                  }}
-                  title="项目二维码"
-                />
-              </li>
-              <li className="project-action">
-                <FileTextOutlined
-                  type="file-text"
-                  onClick={() => {
-                    onOpenVisibleSummary(projectSummary);
-                  }}
-                  title="项目总结"
-                />
-              </li>
-            </ul>
           </div>
+          <ul
+            className={classNames(
+              "project-actions-wrapper absolute bottom-0 left-0 flex h-0 w-full overflow-y-hidden opacity-0 transition-all group-hover:h-[36px] group-hover:opacity-100",
+              {
+                "!h-auto !opacity-100": isMobile,
+                "!hidden": isMobile && preview,
+              }
+            )}
+          >
+            <li className="project-action">
+              <a
+                className="project-link"
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer external nofollow"
+                title={`刘小聪的项目-${name}-链接地址`}
+              >
+                <LinkOutlined type="link" />
+              </a>
+            </li>
+            <li className="project-action">
+              <QrcodeOutlined
+                type="qrcode"
+                onClick={() => {
+                  onOpenVisibleQr(link);
+                }}
+                title="项目二维码"
+              />
+            </li>
+            <li className="project-action">
+              <FileTextOutlined
+                type="file-text"
+                onClick={() => {
+                  onOpenVisibleSummary(projectSummary);
+                }}
+                title="项目总结"
+              />
+            </li>
+          </ul>
         </div>
-      );
-    });
+      </div>
+    );
+  };
+
+  const renderSlides = () => {
+    return Constants.Projects.map((project) => renderSlide(project));
   };
 
   return (
@@ -206,7 +259,13 @@ export default function ResumeProject() {
         )}
       >
         <div className="title-wrapper">
-          <h2 className="title">项目经历</h2>
+          <h2
+            className={classNames("title", {
+              "!text-[2.5rem]": isMobile,
+            })}
+          >
+            项目经历
+          </h2>
         </div>
 
         <div
@@ -215,13 +274,13 @@ export default function ResumeProject() {
           })}
         >
           {isMobile ? (
-            <Carousel3d
+            <CarouselThreeD
               childMaxLength={projectsLength}
               z={540}
               blurIncrease={3}
             >
               {renderSlides()}
-            </Carousel3d>
+            </CarouselThreeD>
           ) : (
             <Swiper
               className="!w-[100vw]"
@@ -243,6 +302,18 @@ export default function ResumeProject() {
         </Carousel> */}
         </div>
       </div>
+
+      {isVisibleProject && (
+        <Modal
+          open={isVisibleProject}
+          footer={null}
+          width="90%"
+          onCancel={onCloseVisibleProject}
+          wrapClassName="project-detail-modal"
+        >
+          {renderSlide(project!, true)}
+        </Modal>
+      )}
 
       <QrcodeModal
         visible={isVisibleQr}

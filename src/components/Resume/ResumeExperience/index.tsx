@@ -6,14 +6,13 @@ import React, { ReactElement, useCallback, useRef, useState } from "react";
 
 import { Carousel } from "@/components";
 import Carousel3d from "@/components/Carousel3d";
+// import ParallaxCarousel from "@/components/ParallaxCarousel";
 import * as Constants from "@/constants";
 import useMobile from "@/hooks/useMobile";
 import { isSafari } from "@/utils/platform";
 import { getRoutePrefix } from "@/utils/route";
 
-// export interface IResumeExperienceProps {
-//   isMobile: boolean;
-// }
+type TExperience = (typeof Constants.Experiences)[0];
 
 export default function ResumeExperience() {
   const [rotateX, setRotateX] = useState(0);
@@ -54,13 +53,77 @@ export default function ResumeExperience() {
     setRotateY(0);
   }, [isMobile]);
 
+  const renderExperienceImage = (experience: TExperience) => (
+    <div
+      className={classNames("flex w-full items-center justify-center", {
+        "!w-full": isMobile,
+        "absolute top-1/2 -translate-y-1/2": !isMobile,
+      })}
+    >
+      <img
+        className="max-w-[80px]"
+        src={getRoutePrefix() + experience.image}
+        alt="Company"
+      />
+    </div>
+  );
+
+  const renderExperienceContent = (experience: TExperience) => {
+    const { company, time, post, works } = experience;
+    return (
+      <div
+        className={classNames("relative w-full px-[30px]", {
+          "!px-4": isMobile,
+          "h-full": !isMobile,
+        })}
+      >
+        <h5
+          className={classNames("mb-[20px] text-[20px]", {
+            "!mb-2 text-center !text-xl": isMobile,
+          })}
+        >
+          {company}
+        </h5>
+        <div
+          className={classNames("mb-[15px] text-[18px]", {
+            "!mb-1 text-center !text-lg": isMobile,
+          })}
+        >
+          {time}
+        </div>
+        <div
+          className={classNames("mb-[15px] text-[18px]", {
+            "!mb-1 text-center !text-lg": isMobile,
+          })}
+        >
+          {post}
+        </div>
+        <ul className="mb-[0] list-decimal pl-[20px] text-[16px]">
+          {works.map((work) => {
+            return (
+              <li
+                className={classNames("leading-[1.6]", {
+                  "!text-base": isMobile,
+                })}
+                key={work}
+              >
+                {work}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  };
+
   const renderExperiences = (): ReactElement[] => {
     return Constants.Experiences.map((experience) => {
-      const { company, time, post, works, image } = experience;
+      const { company } = experience;
       return (
         <div
           className={classNames("experience-wrapper bg-white", {
             "min-h-[512px]": isMobile,
+            "h-full": !isMobile,
           })}
           key={company}
           style={{
@@ -73,56 +136,19 @@ export default function ResumeExperience() {
             })}
           >
             <div
-              className={classNames("experience-image-wrapper", {
-                "!w-full": isMobile,
+              className={classNames("relative", {
+                "w-[140px]": !isMobile,
               })}
             >
-              <img
-                className="company-image"
-                src={getRoutePrefix() + image}
-                alt="Company"
-              />
+              {renderExperienceImage(experience)}
             </div>
             <div
-              className={classNames("experience-content-wrapper", {
-                "!px-4": isMobile,
+              className={classNames("relative", {
+                "flex-1 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-[1px] before:bg-[#e8e8e8] before:content-['']":
+                  !isMobile,
               })}
             >
-              <h5
-                className={classNames("company-name", {
-                  "!mb-2 text-center !text-xl": isMobile,
-                })}
-              >
-                {company}
-              </h5>
-              <div
-                className={classNames("company-time", {
-                  "!mb-1 text-center !text-lg": isMobile,
-                })}
-              >
-                {time}
-              </div>
-              <div
-                className={classNames("company-post", {
-                  "!mb-1 text-center !text-lg": isMobile,
-                })}
-              >
-                {post}
-              </div>
-              <ul className="company-works">
-                {works.map((work) => {
-                  return (
-                    <li
-                      className={classNames("company-work", {
-                        "!text-base": isMobile,
-                      })}
-                      key={work}
-                    >
-                      {work}
-                    </li>
-                  );
-                })}
-              </ul>
+              {renderExperienceContent(experience)}
             </div>
           </div>
         </div>
@@ -156,7 +182,13 @@ export default function ResumeExperience() {
         )}
       >
         <div className="title-wrapper">
-          <h1 className="title">工作经历</h1>
+          <h1
+            className={classNames("title", {
+              "!text-[2.5rem]": isMobile,
+            })}
+          >
+            工作经历
+          </h1>
         </div>
 
         <div
@@ -176,6 +208,12 @@ export default function ResumeExperience() {
               {renderExperiences()}
             </Carousel3d>
           ) : (
+            // <ParallaxCarousel<TExperience>
+            //   className="experiences-carousel bg-white"
+            //   list={Constants.Experiences}
+            //   renderLeftChildren={renderExperienceImage}
+            //   renderRightChildren={renderExperienceContent}
+            // />
             <Carousel
               className="experiences-carousel"
               effect="scrollx"

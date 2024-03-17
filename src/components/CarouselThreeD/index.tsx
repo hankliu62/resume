@@ -9,6 +9,17 @@ import React from "react";
 // const defaultDpr = 2; // sketch 里用的是 iphone 6 尺寸;
 const dpr = 0.5; // currentDpr / defaultDpr;
 
+function isEqual(source: object, target: object) {
+  const keys = Object.keys(source);
+  return (
+    keys === Object.keys(target) &&
+    keys.every((key) =>
+      source[key] instanceof Object
+        ? isEqual(source[key], target[key])
+        : source[key] === target[key]
+    )
+  );
+}
 class CarouselThreeD extends React.PureComponent {
   static propTypes = {
     children: PropTypes.any,
@@ -70,6 +81,18 @@ class CarouselThreeD extends React.PureComponent {
         });
       }
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (isEqual(nextState, this.state)) {
+      return true;
+    }
+
+    if (isEqual(nextProps, this.props)) {
+      return false;
+    }
+
+    return true;
   }
 
   onTouchStart = (e) => {
@@ -177,12 +200,13 @@ class CarouselThreeD extends React.PureComponent {
         length > childMaxLength ? childMaxLength : length
       );
       const style = {
+        transformStyle: "preserve-3d",
         transform,
         // opacity: animStyle.opacity, 留坑，preserve-3d 不可以与 opacity 同时使用，排查了一下午
       };
       return (
         <div
-          className="itemWrapper"
+          className="itemWrapper absolute left-0 top-0"
           key={item.key}
           style={style}
         >
@@ -194,12 +218,12 @@ class CarouselThreeD extends React.PureComponent {
             }}
           >
             <div
-              className="bgAndBlurLayer"
+              className="bgAndBlurLayer m-auto overflow-hidden rounded-lg transition-[filter] duration-[0.45s]"
               style={{ ...animStyle }}
             >
               {/* transform 与 filter 的距阵冲突，图层分离 */}
               <div
-                className="contentLayer"
+                className="contentLayer transition-[opacity] duration-[0.65s]"
                 style={{ opacity: this.state.current === i ? 1 : 1 }}
               >
                 {item}
@@ -239,10 +263,11 @@ class CarouselThreeD extends React.PureComponent {
         onMouseMove={this.onTouchMove}
         onTouchEnd={this.onTouchEnd}
         onMouseUp={this.onTouchEnd}
+        className="relative h-full w-full"
       >
-        <div className="carouselWrapper">
+        <div className="carouselWrapper absolute left-0 right-0 m-auto -mt-[360px] h-[80vh] w-[60vw] pt-[360px]">
           <div
-            className="carousel"
+            className="carousel relative m-auto h-full w-full"
             style={{
               ...style,
               perspective: perspectiveDpr,
@@ -252,8 +277,9 @@ class CarouselThreeD extends React.PureComponent {
             }}
           >
             <div
-              className="carouselContent"
+              className="carouselContent w-full"
               style={{
+                transformStyle: "preserve-3d",
                 transform: `translateY(${tilt}) rotateY(${this.state.rotate}deg)`,
                 transition: this.state.transition,
               }}

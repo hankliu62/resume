@@ -94,7 +94,7 @@ export default function ResumeArticle() {
       >
         <div
           className={classNames("title-wrapper", {
-            "min-h-[30vh]": isMobile,
+            "min-h-[30vh] text-[3rem]": isMobile,
           })}
         >
           <h1
