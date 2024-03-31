@@ -5,6 +5,7 @@ import { Popover, Progress } from "antd";
 import classNames from "classnames";
 import React from "react";
 
+import LazyBgImage from "@/components/LazyBgImage";
 import * as Constants from "@/constants";
 import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
@@ -57,7 +58,7 @@ export default function ResumeSkill() {
 
   return (
     <div className="resume-skill-wrapper relative h-[100vh] w-full">
-      <div
+      <LazyBgImage
         className="absolute left-0 top-0 z-0 h-full w-full bg-[linear-gradient(270deg,_#ff5f6d,_#ffc371)] bg-cover bg-center"
         style={{
           backgroundImage: `url(${getRoutePrefix()}/images/resume/skills/banner.jpg)`,
@@ -70,7 +71,7 @@ export default function ResumeSkill() {
             inset: 0,
           }}
         />
-      </div>
+      </LazyBgImage>
 
       <div
         className={classNames(
@@ -119,7 +120,8 @@ export default function ResumeSkill() {
                       />
                     }
                   >
-                    <div
+                    <LazyBgImage
+                      fallbackSrc={`${getRoutePrefix()}/images/resume/loading.gif`}
                       className={classNames(
                         "skill-wrapper group relative flex items-center bg-white bg-[length:86px_86px] bg-center bg-no-repeat transition-all hover:bg-[length:92px_92px]",
                         {
@@ -150,7 +152,7 @@ export default function ResumeSkill() {
                           />
                         )}
                       </div>
-                    </div>
+                    </LazyBgImage>
                   </Popover>
                 </li>
               );

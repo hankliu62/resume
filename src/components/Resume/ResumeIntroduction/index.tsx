@@ -3,6 +3,8 @@
 import classNames from "classnames";
 import React from "react";
 
+import LazyBgImage from "@/components/LazyBgImage";
+import LazyImage from "@/components/LazyImage";
 import * as Constants from "@/constants";
 import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
@@ -12,7 +14,7 @@ export default function ResumeIntroduction() {
 
   return (
     <div className="resume-introduction-wrapper relative h-[100vh] w-full">
-      <div
+      <LazyBgImage
         className="absolute left-0 top-0 z-0 h-full w-full bg-[#109085] bg-cover bg-center"
         style={{
           backgroundImage: `url(${getRoutePrefix()}/images/resume/introduction/banner.jpg)`,
@@ -25,7 +27,7 @@ export default function ResumeIntroduction() {
             inset: 0,
           }}
         />
-      </div>
+      </LazyBgImage>
 
       <div
         className={classNames(
@@ -79,7 +81,7 @@ export default function ResumeIntroduction() {
               const { type, value } = info;
               return (
                 <li className="information-item" key={type}>
-                  <img
+                  <LazyImage
                     className="information-item-icon"
                     src={`${getRoutePrefix()}/images/resume/introduction/${type}.svg`}
                     alt=""

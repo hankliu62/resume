@@ -12,6 +12,8 @@ import React, { useState } from "react";
 import { Carousel, MessageModal, QrcodeModal } from "@/components";
 import Carousel3d from "@/components/Carousel3d";
 import CarouselThreeD from "@/components/CarouselThreeD";
+import LazyBgImage from "@/components/LazyBgImage";
+import LazyImage from "@/components/LazyImage";
 import Swiper from "@/components/Swiper";
 import * as Constants from "@/constants";
 import useMobile from "@/hooks/useMobile";
@@ -108,7 +110,7 @@ export default function ResumeProject() {
                 "!w-full": isMobile,
               })}
             >
-              <img
+              <LazyImage
                 className={classNames("project-image", {
                   "mx-auto !mb-1 !h-16 !max-w-[60%]": isMobile,
                 })}
@@ -235,7 +237,7 @@ export default function ResumeProject() {
 
   return (
     <div className="resume-project-wrapper relative h-[100vh] w-full">
-      <div
+      <LazyBgImage
         className="absolute left-0 top-0 z-0 h-full w-full bg-[linear-gradient(270deg,_#283048,_#859398)] bg-cover bg-center"
         style={{
           backgroundImage: `url(${getRoutePrefix()}/images/resume/projects/banner.jpg)`,
@@ -248,7 +250,7 @@ export default function ResumeProject() {
             inset: 0,
           }}
         />
-      </div>
+      </LazyBgImage>
 
       <div
         className={classNames(

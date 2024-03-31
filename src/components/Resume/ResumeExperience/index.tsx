@@ -6,6 +6,8 @@ import React, { ReactElement, useCallback, useRef, useState } from "react";
 
 import { Carousel } from "@/components";
 import Carousel3d from "@/components/Carousel3d";
+import LazyBgImage from "@/components/LazyBgImage";
+import LazyImage from "@/components/LazyImage";
 // import ParallaxCarousel from "@/components/ParallaxCarousel";
 import * as Constants from "@/constants";
 import useMobile from "@/hooks/useMobile";
@@ -60,7 +62,7 @@ export default function ResumeExperience() {
         "absolute top-1/2 -translate-y-1/2": !isMobile,
       })}
     >
-      <img
+      <LazyImage
         className="max-w-[80px]"
         src={getRoutePrefix() + experience.image}
         alt="Company"
@@ -158,7 +160,7 @@ export default function ResumeExperience() {
 
   return (
     <div className="resume-experience-wrapper relative h-[100vh] w-full">
-      <div
+      <LazyBgImage
         className="absolute left-0 top-0 z-0 h-full w-full bg-[#4d5e8f] bg-cover bg-center"
         style={{
           backgroundImage: `url(${getRoutePrefix()}/images/resume/experiences/banner.jpg)`,
@@ -171,7 +173,7 @@ export default function ResumeExperience() {
             inset: 0,
           }}
         />
-      </div>
+      </LazyBgImage>
 
       <div
         className={classNames(

@@ -4,6 +4,7 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Typed from "typed.js";
 
+import LazyBgImage from "@/components/LazyBgImage";
 import * as Constants from "@/constants";
 import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
@@ -79,14 +80,14 @@ export default function ResumeArticle() {
 
   return (
     <div className="resume-article-wrapper">
-      <div
+      <LazyBgImage
         className="resume-article-banner"
         style={{
           backgroundImage: `url(${getRoutePrefix()}/images/resume/article/banner.jpg)`,
         }}
       >
         <div className="resume-article-banner-mask" />
-      </div>
+      </LazyBgImage>
       <div
         className={classNames("resume-article-content", {
           "flex !w-full flex-col-reverse px-6": isMobile,
