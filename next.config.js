@@ -22,6 +22,19 @@ const nextConfig = {
   transpilePackages: ["antd"],
   webpack: (config) => {
     config.plugins.push(new AutoBaseWebpackPlugin());
+    console.log(
+      config.output,
+      config.plugins.find(function (plugin) {
+        return (
+          (plugin === null || plugin === void 0
+            ? void 0
+            : plugin.constructor) &&
+          (plugin === null || plugin === void 0
+            ? void 0
+            : plugin.constructor.name) === "DefinePlugin"
+        );
+      })
+    );
     return config;
   },
   // async headers() {
