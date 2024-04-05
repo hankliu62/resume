@@ -1121,10 +1121,10 @@ async-validator@^4.1.0:
   resolved "https://registry.npmmirror.com/async-validator/-/async-validator-4.2.5.tgz"
   integrity sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==
 
-autobase-webpack-plugin@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.npmmirror.com/autobase-webpack-plugin/-/autobase-webpack-plugin-0.0.2.tgz#8d9256c654ad6e2897dfbb4c4217725a401c25bc"
-  integrity sha512-mrHPp0AOhREhmtjGtdCoQaxuFppWRtE5VizzbjkN1LUujddzDMp0INBejJGkxlU/Bx35o7eO2OEBn/04snKJqg==
+autobase-webpack-plugin@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npmmirror.com/autobase-webpack-plugin/-/autobase-webpack-plugin-0.0.3.tgz#1195d718c3d0494c4b7b95e722492e6ce4a88e4b"
+  integrity sha512-M/DsbKODzdzqoOnRs9AQCLxtRZDxLHz1MJ0bgD7rU7og9O03RZvoojJ1Yhmei6g3gYuAfTwh1WYtOn9Dq4u+cA==
   dependencies:
     cross-env "^7.0.3"
     rimraf "^5.0.5"
