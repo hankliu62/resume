@@ -4,6 +4,10 @@ const AutoBaseWebpackPlugin = require("autobase-webpack-plugin");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  assetPrefix:
+    process.env.NODE_ENV === "production" && process.env.GITHUB_ACTIONS
+      ? "/resume/"
+      : "",
   output: "export",
   lessLoaderOptions: {
     lessOptions: {
@@ -22,7 +26,6 @@ const nextConfig = {
   transpilePackages: ["antd"],
   webpack: (config) => {
     config.plugins.push(new AutoBaseWebpackPlugin());
-    console.log(config, process.env);
     return config;
   },
   // async headers() {
