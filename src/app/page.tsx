@@ -35,7 +35,7 @@ const Options = {
   arrowNavigation: true, // use arrow keys
   className: "resume-properties-section-container", // the class name for the section container
   delay: 1000, // the scroll animation speed
-  navigation: true, // use dots navigatio
+  navigation: false, // use dots navigatio
   scrollBar: false, // use the browser default scrollbar
   sectionClassName: "resume-properties-section resume-section-container", // the section class name
   sectionPaddingTop: "0", // the section top padding

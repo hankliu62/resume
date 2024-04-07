@@ -17,7 +17,6 @@ type TScrollCallbackParams = {
   activeSection: number;
   scrollingStarted: boolean;
   sectionScrolledPosition: number;
-  windowHeight: number;
 };
 
 interface ISectionsContainerProps {
@@ -64,23 +63,17 @@ const SectionsContainer = ({
   const stateActiveSectionRef = useRef<number>(stateActiveSection);
 
   const [scrollingStarted, setScrollingStarted] = useState<boolean>(false);
+  const scrollingStartedRef = useRef<boolean>(false);
   const [sectionScrolledPosition, setSectionScrolledPosition] =
     useState<number>(0);
-  const [windowHeight, setWindowHeight] = useState<number>(0);
 
   const scrollCallbackParams = useMemo<TScrollCallbackParams>(
     () => ({
       activeSection: stateActiveSection,
       scrollingStarted,
       sectionScrolledPosition,
-      windowHeight,
     }),
-    [
-      scrollingStarted,
-      sectionScrolledPosition,
-      stateActiveSection,
-      windowHeight,
-    ]
+    [scrollingStarted, sectionScrolledPosition, stateActiveSection]
   );
 
   const resetScrollTimer = useRef<number>();
@@ -143,6 +136,7 @@ const SectionsContainer = ({
 
     resetScrollTimer.current = setTimeout(() => {
       setScrollingStarted(false);
+      scrollingStartedRef.current = false;
     }, delay + 300) as unknown as number;
   }, [clearResetScrollTimer, delay]);
 
@@ -178,9 +172,10 @@ const SectionsContainer = ({
       }
 
       // 设置translate偏移量和当前选中的Section
-      const position = 0 - index * windowHeight;
+      const position = 0 - index * window.innerHeight;
 
       setScrollingStarted(true);
+      scrollingStartedRef.current = true;
       setStateActiveSection(index);
       stateActiveSectionRef.current = index;
       setSectionScrolledPosition(position);
@@ -191,7 +186,7 @@ const SectionsContainer = ({
       // 修改当前选中的Section时，添加对应的active class
       addActiveClass();
     },
-    [anchors, addActiveClass, handleScrollCallback, resetScroll, windowHeight]
+    [anchors, addActiveClass, handleScrollCallback, resetScroll]
   );
 
   const handleAnchor = useCallback(() => {
@@ -207,7 +202,7 @@ const SectionsContainer = ({
     const position = 0 - stateActiveSectionRef.current * window.innerHeight;
 
     setScrollingStarted(true);
-    setWindowHeight(window.innerHeight);
+    scrollingStartedRef.current = true;
     setSectionScrolledPosition(position);
 
     resetScroll();
@@ -225,7 +220,7 @@ const SectionsContainer = ({
           : -1;
 
       if (
-        scrollingStarted ||
+        scrollingStartedRef.current ||
         activeSection < 0 ||
         childrenLength.current === activeSection
       ) {
@@ -234,18 +229,18 @@ const SectionsContainer = ({
 
       setAnchorAndSectionTransition(activeSection);
     },
-    [setAnchorAndSectionTransition, scrollingStarted]
+    [setAnchorAndSectionTransition]
   );
 
-  // 处理wheel事件
-  useEffect(() => {
-    const handleMouseWheel = throttle((event: any) => {
+  // 处理滚轮事件的滚动
+  const handleMouseWheel = useCallback(
+    throttle((event: any) => {
       const e = window.event || event;
       const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
       const activeSection = stateActiveSectionRef.current - delta;
 
       if (
-        scrollingStarted ||
+        scrollingStartedRef.current ||
         activeSection < 0 ||
         childrenLength.current === activeSection
       ) {
@@ -253,8 +248,12 @@ const SectionsContainer = ({
       }
 
       setAnchorAndSectionTransition(activeSection);
-    }, 300);
+    }, 100),
+    [setAnchorAndSectionTransition]
+  );
 
+  // 处理wheel事件
+  useEffect(() => {
     window.addEventListener("wheel", handleMouseWheel, false);
     window.addEventListener("mousewheel", handleMouseWheel, false);
     window.addEventListener("DOMMouseScroll", handleMouseWheel, false);
@@ -263,11 +262,7 @@ const SectionsContainer = ({
       window.removeEventListener("mousewheel", handleMouseWheel);
       window.removeEventListener("DOMMouseScroll", handleMouseWheel);
     };
-  }, [setAnchorAndSectionTransition, scrollingStarted]);
-
-  const touchNavStartRef = useRef<(this: Element, ev: Event) => any>();
-  const touchNavMoveRef = useRef<(this: Element, ev: Event) => any>();
-  const touchNavEndRef = useRef<(this: Element, ev: Event) => any>();
+  }, [handleMouseWheel]);
 
   const handleTouchNav = useCallback(() => {
     const touchsurface = document.querySelector("." + className);
@@ -282,19 +277,14 @@ const SectionsContainer = ({
     let elapsedTime: number;
     let startTime: number;
 
-    touchNavStartRef.current &&
-      touchsurface &&
-      touchsurface.removeEventListener("touchstart", touchNavStartRef.current);
+    const handleswipe = function (swipedir: string) {
+      console.log(swipedir);
+    };
 
-    touchNavMoveRef.current &&
-      touchsurface &&
-      touchsurface.removeEventListener("touchmove", touchNavMoveRef.current);
-
-    touchNavEndRef.current &&
-      touchsurface &&
-      touchsurface.removeEventListener("touchend", touchNavEndRef.current);
-
-    touchNavStartRef.current = (e: any) => {
+    const handleTouchNavStart = (e: any) => {
+      if (scrollingStartedRef.current) {
+        return;
+      }
       const touchobj = e.changedTouches[0];
       swipedir = "none";
       startX = touchobj.pageX;
@@ -302,15 +292,24 @@ const SectionsContainer = ({
       startTime = Date.now();
     };
 
-    touchNavMoveRef.current = (e: any) => {
+    const handleTouchNavMove = (e: any) => {
+      if (scrollingStartedRef.current) {
+        return;
+      }
+
       e.preventDefault();
     };
 
-    touchNavEndRef.current = (e: any) => {
+    const handleTouchNavEnd = (e: any) => {
+      if (scrollingStartedRef.current) {
+        return;
+      }
+
       const touchobj = e.changedTouches[0];
       distX = touchobj.pageX - startX;
       distY = touchobj.pageY - startY;
       elapsedTime = Date.now() - startTime;
+
       if (
         elapsedTime <= allowedTime &&
         Math.abs(distY) >= threshold &&
@@ -318,36 +317,31 @@ const SectionsContainer = ({
       ) {
         swipedir = distY < 0 ? "up" : "down";
         const direction =
-          swipedir === "down"
-            ? stateActiveSectionRef.current - 1
-            : swipedir === "up"
-            ? stateActiveSectionRef.current + 1
-            : -1;
+          stateActiveSectionRef.current + 1 * (swipedir === "down" ? -1 : 1);
         setAnchorAndSectionTransition(direction);
       }
       handleswipe(swipedir);
     };
 
-    const handleswipe = function (swipedir: string) {
-      console.log(swipedir);
+    touchsurface &&
+      touchsurface.addEventListener("touchstart", handleTouchNavStart, false);
+
+    touchsurface &&
+      touchsurface.addEventListener("touchmove", handleTouchNavMove, false);
+
+    touchsurface &&
+      touchsurface.addEventListener("touchend", handleTouchNavEnd, false);
+
+    return () => {
+      touchsurface &&
+        touchsurface.removeEventListener("touchstart", handleTouchNavStart);
+
+      touchsurface &&
+        touchsurface.removeEventListener("touchmove", handleTouchNavMove);
+
+      touchsurface &&
+        touchsurface.removeEventListener("touchend", handleTouchNavEnd);
     };
-
-    touchsurface &&
-      touchsurface.addEventListener(
-        "touchstart",
-        touchNavStartRef.current,
-        false
-      );
-
-    touchsurface &&
-      touchsurface.addEventListener(
-        "touchmove",
-        touchNavMoveRef.current,
-        false
-      );
-
-    touchsurface &&
-      touchsurface.addEventListener("touchend", touchNavEndRef.current, false);
   }, [className, setAnchorAndSectionTransition]);
 
   useEffect(() => {
