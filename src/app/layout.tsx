@@ -4,9 +4,14 @@ import "./components.css";
 // import "aos/dist/aos.css";
 import { Inter } from "next/font/google";
 
+import { getRoutePrefix } from "@/utils/route";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+  icons: {
+    icon: `${getRoutePrefix()}/favicon.ico`,
+  },
   title: "刘小聪 - Web前端工程师简历 | Front-end Web Developer",
   description:
     "刘小聪的Web前端工程师简历，精通前端，涉猎后端，对前端有着浓厚的兴趣；希望能够在前端这条路上一直走下去。",

@@ -2,13 +2,15 @@
 
 import { StyleProvider } from "@ant-design/cssinjs";
 import { FilePdfOutlined, UpOutlined } from "@ant-design/icons";
+// 要收费(不再使用)
+// import ReactFullpage from "@fullpage/react-fullpage";
 import { ConfigProvider as AntdConfigProvider, Popover, Watermark } from "antd";
 import zhCN from "antd/locale/zh_CN";
 // import AOS from "aos";
 import React, { useEffect, useMemo } from "react";
-// import ReactFullpage from '@fullpage/react-fullpage';
-import { Section, SectionsContainer } from "react-fullpage";
 
+// import { Section, SectionsContainer } from "react-fullpage";
+import { Section, SectionsContainer } from "@/components/FullPage";
 import {
   ResumeArticle,
   ResumeExperience,
@@ -19,22 +21,6 @@ import {
 } from "@/components/Resume";
 import useMobile from "@/hooks/useMobile";
 import { getRoutePrefix } from "@/utils/route";
-
-// const Options = {
-//   licenseKey: 'OPEN-SOURCE-GPLV3-LICENSE',
-//   anchors: ['resume-index', 'resume-introduction', 'resume-skill', 'resume-experience',
-//     'resume-project', 'resume-article'],
-//   navigationTooltips: ['简介', '自我介绍', '技能', '工作经历', '项目经验', '个人博客'],
-//   scrollBar: false,
-//   navigation: true,
-//   verticalAlign: false,
-//   paddingTop: '30px',
-//   paddingBottom: '30px',
-//   arrowNavigation: true,
-//   credits: {
-//     enabled: true,
-//   }
-// };
 
 const Options = {
   activeClass: "active", // the class that is appended to the sections links
@@ -49,12 +35,13 @@ const Options = {
   arrowNavigation: true, // use arrow keys
   className: "resume-properties-section-container", // the class name for the section container
   delay: 1000, // the scroll animation speed
-  navigation: false, // use dots navigatio
+  navigation: true, // use dots navigatio
   scrollBar: false, // use the browser default scrollbar
   sectionClassName: "resume-properties-section resume-section-container", // the section class name
   sectionPaddingTop: "0", // the section top padding
   sectionPaddingBottom: "0", // the section bottom padding
   verticalAlign: false, // align the content of each section vertical
+  touchNavigation: true,
 };
 
 interface IResumeProps {
@@ -98,6 +85,123 @@ export default function Resume() {
     // });
   }, []);
 
+  const renderResumeIndex = () => {
+    return (
+      <div className="section resume-section resume-section-index">
+        <ResumeIndex />
+      </div>
+    );
+  };
+
+  const renderResumeIntroduction = () => {
+    return (
+      <div
+        className="section resume-section resume-section-introduction"
+        style={{
+          backgroundImage: `url(${getRoutePrefix()}/images/resume/background.png)`,
+        }}
+      >
+        <ResumeIntroduction />
+      </div>
+    );
+  };
+
+  const renderResumeExperience = () => {
+    return (
+      <div
+        className="section resume-section resume-section-experience"
+        style={{
+          backgroundImage: `url(${getRoutePrefix()}/images/resume/background.png)`,
+        }}
+      >
+        <ResumeExperience />
+      </div>
+    );
+  };
+
+  const renderResumeSkill = () => {
+    return (
+      <div className="section resume-section resume-section-skill">
+        <ResumeSkill />
+      </div>
+    );
+  };
+
+  const renderResumeProject = () => {
+    return (
+      <div className="section resume-section resume-section-project overflow-x-hidden">
+        <ResumeProject />
+      </div>
+    );
+  };
+
+  const renderResumeArticle = () => {
+    return (
+      <div className="section resume-section resume-section-article">
+        <ResumeArticle />
+      </div>
+    );
+  };
+
+  // const renderReactFullpageWrapper = () => {
+  //   const Options = {
+  //     anchors: [
+  //       "resume-index",
+  //       "resume-introduction",
+  //       "resume-skill",
+  //       "resume-experience",
+  //       "resume-project",
+  //       "resume-article",
+  //     ],
+  //     navigationTooltips: [
+  //       "简介",
+  //       "自我介绍",
+  //       "技能",
+  //       "工作经历",
+  //       "项目经验",
+  //       "个人博客",
+  //     ],
+  //     scrollBar: false,
+  //     navigation: true,
+  //     verticalAlign: false,
+  //     paddingTop: "0",
+  //     paddingBottom: "0",
+  //     arrowNavigation: true,
+  //     credits: {
+  //       enabled: false,
+  //     },
+  //   };
+
+  //   return (
+  //     <ReactFullpage
+  //       {...Options}
+  //       render={(comp) => (
+  //         <ReactFullpage.Wrapper>
+  //           {renderResumeIndex()}
+  //           {renderResumeIntroduction()}
+  //           {renderResumeSkill()}
+  //           {renderResumeExperience()}
+  //           {renderResumeProject()}
+  //           {renderResumeArticle()}
+  //         </ReactFullpage.Wrapper>
+  //       )}
+  //     />
+  //   );
+  // };
+
+  const renderSectionsContainer = () => {
+    return (
+      <SectionsContainer {...options}>
+        <Section>{renderResumeIndex()}</Section>
+        <Section>{renderResumeIntroduction()}</Section>
+        <Section>{renderResumeSkill()}</Section>
+        <Section>{renderResumeExperience()}</Section>
+        <Section>{renderResumeProject()}</Section>
+        <Section>{renderResumeArticle()}</Section>
+      </SectionsContainer>
+    );
+  };
+
   return (
     <div className="resume-container">
       <StyleProvider hashPriority="high">
@@ -107,81 +211,11 @@ export default function Resume() {
             font={{ color: "rgba(0, 0, 0, 0.1)" }}
             className="flex h-full flex-1 flex-col"
           >
-            <SectionsContainer {...options}>
-              <Section>
-                <div className="section resume-section resume-section-index">
-                  <ResumeIndex />
-                </div>
-              </Section>
-              <Section>
-                <div
-                  className="section resume-section resume-section-introduction"
-                  style={{
-                    backgroundImage: `url(${getRoutePrefix()}/images/resume/background.png)`,
-                  }}
-                >
-                  <ResumeIntroduction />
-                </div>
-              </Section>
-              <Section>
-                <div className="section resume-section resume-section-skill">
-                  <ResumeSkill />
-                </div>
-              </Section>
-              <Section>
-                <div
-                  className="section resume-section resume-section-experience"
-                  style={{
-                    backgroundImage: `url(${getRoutePrefix()}/images/resume/background.png)`,
-                  }}
-                >
-                  <ResumeExperience />
-                </div>
-              </Section>
-              <Section>
-                <div className="section resume-section resume-section-project overflow-x-hidden">
-                  <ResumeProject />
-                </div>
-              </Section>
-              <Section>
-                <div className="section resume-section resume-section-article">
-                  <ResumeArticle />
-                </div>
-              </Section>
-            </SectionsContainer>
+            {renderSectionsContainer()}
           </Watermark>
         </AntdConfigProvider>
       </StyleProvider>
 
-      {/* <ReactFullpage
-        {...options}
-        render={() => {
-          return (
-            <div className="resume-section-container">
-              <ReactFullpage.Wrapper>
-                <div className="section resume-section resume-section-index">
-                  <ResumeIndex isMobile={isMobile} />
-                </div>
-                <div className="section resume-section resume-section-introduction">
-                  <ResumeIntroduction isMobile={isMobile} />
-                </div>
-                <div className="section resume-section resume-section-skill">
-                  <ResumeSkill isMobile={isMobile} />
-                </div>
-                <div className="section resume-section resume-section-experience">
-                  <ResumeExperience isMobile={isMobile} />
-                </div>
-                <div className="section resume-section resume-section-project">
-                  <ResumeProject isMobile={isMobile} />
-                </div>
-                <div className="section resume-section resume-section-article">
-                  <ResumeArticle isMobile={isMobile} />
-                </div>
-              </ReactFullpage.Wrapper>
-            </div>
-          );
-        }}
-      /> */}
       <div className="arrow-wrapper">
         <UpOutlined />
       </div>
