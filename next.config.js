@@ -20,6 +20,9 @@ const nextConfig = {
     unoptimized: true,
   },
   transpilePackages: ["antd"],
+  env: {
+    ROUTE_PREFIX: "",
+  },
   // webpack: (config) => {
   //   config.plugins.push(new AutoBaseWebpackPlugin());
   //   return config;
