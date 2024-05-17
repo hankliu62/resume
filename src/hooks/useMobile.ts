@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { isMobile as checkIsMobile } from "@/utils/platform";
+import { isMobile as checkIsMobile } from '@/utils/platform';
 
 export default function useMobile() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
