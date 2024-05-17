@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import classNames from "classnames";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import Typed from "typed.js";
+import classNames from 'classnames';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import Typed from 'typed.js';
 
-import LazyBgImage from "@/components/LazyBgImage";
-import * as Constants from "@/constants";
-import useMobile from "@/hooks/useMobile";
-import { getRoutePrefix } from "@/utils/route";
+import LazyBgImage from '@/components/LazyBgImage';
+import * as Constants from '@/constants';
+import useMobile from '@/hooks/useMobile';
+import { getRoutePrefix } from '@/utils/route';
 
 export default function ResumeArticle() {
   const isMobile = useMobile();
@@ -28,9 +28,7 @@ export default function ResumeArticle() {
     setOffsetTop((rect?.top || 0) + 50);
   }, []);
 
-  const onCubeMouseMove = useCallback<
-    React.MouseEventHandler<HTMLUListElement>
-  >(
+  const onCubeMouseMove = useCallback<React.MouseEventHandler<HTMLUListElement>>(
     (e) => {
       window.requestAnimationFrame(function () {
         const elem = cube.current;
@@ -44,12 +42,10 @@ export default function ResumeArticle() {
       // setRotateX(e.pageY - offsetTop);
       // setRotateY(e.pageX - offsetLeft);
     },
-    [offsetLeft, offsetTop]
+    [offsetLeft, offsetTop],
   );
 
-  const onCubeMouseLeave = useCallback<
-    React.MouseEventHandler<HTMLUListElement>
-  >(() => {
+  const onCubeMouseLeave = useCallback<React.MouseEventHandler<HTMLUListElement>>(() => {
     // setRotateX(-25);
     // setRotateY(32);
 
@@ -64,8 +60,8 @@ export default function ResumeArticle() {
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
-        "努力去听风的声音，不必在意风的方向。",
-        "等风来不如追风去，追逐的过程就是人生的意义。",
+        '努力去听风的声音，不必在意风的方向。',
+        '等风来不如追风去，追逐的过程就是人生的意义。',
       ],
       typeSpeed: 100,
       backSpeed: 50,
@@ -89,18 +85,18 @@ export default function ResumeArticle() {
         <div className="resume-article-banner-mask" />
       </LazyBgImage>
       <div
-        className={classNames("resume-article-content", {
-          "flex !w-full flex-col-reverse px-6": isMobile,
+        className={classNames('resume-article-content', {
+          'flex !w-full flex-col-reverse px-6': isMobile,
         })}
       >
         <div
-          className={classNames("title-wrapper", {
-            "min-h-[30vh] text-[3rem]": isMobile,
+          className={classNames('title-wrapper', {
+            'min-h-[30vh] text-[3rem]': isMobile,
           })}
         >
           <h1
-            className={classNames("title", {
-              "text-center !text-4xl": isMobile,
+            className={classNames('title', {
+              'text-center !text-4xl': isMobile,
             })}
           >
             <a
@@ -114,8 +110,8 @@ export default function ResumeArticle() {
             </a>
           </h1>
           <div
-            className={classNames("sub-title", {
-              "!text-xl": isMobile,
+            className={classNames('sub-title', {
+              '!text-xl': isMobile,
             })}
           >
             <span ref={el} />
@@ -125,7 +121,7 @@ export default function ResumeArticle() {
 
         <div
           className={classNames({
-            "flex h-52 justify-center": isMobile,
+            'flex h-52 justify-center': isMobile,
           })}
         >
           <div className="contenedor" ref={contenedor}>

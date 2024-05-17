@@ -1,18 +1,10 @@
-import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
-import classNames from "classnames";
-import BannerAnim from "rc-banner-anim";
-import QueueAnim from "rc-queue-anim";
-import { TweenOneGroup } from "rc-tween-one";
-import {
-  JSX,
-  memo,
-  ReactElement,
-  Suspense,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
+import classNames from 'classnames';
+import BannerAnim from 'rc-banner-anim';
+import QueueAnim from 'rc-queue-anim';
+import { TweenOneGroup } from 'rc-tween-one';
+import type { JSX, ReactElement} from 'react';
+import { memo, Suspense, useCallback, useMemo, useRef, useState } from 'react';
 
 const Element = BannerAnim.Element;
 
@@ -39,9 +31,7 @@ const ParallaxCarousel = function <T>({
 }: IParallaxCarouselProps<T>) {
   const [showInt, setShowInt] = useState<number>(0);
   const [delay, setDelay] = useState<number>(0);
-  const [imgAnim, setImgAnim] = useState<
-    Array<{ translateX: number[]; opacity: number[] }>
-  >([
+  const [imgAnim, setImgAnim] = useState<{ translateX: number[]; opacity: number[] }[]>([
     { translateX: [0, 300], opacity: [1, 0] },
     { translateX: [0, -300], opacity: [1, 0] },
   ]);
@@ -94,7 +84,7 @@ const ParallaxCarousel = function <T>({
   }, [listLength, showInt]);
 
   const getDuration = useCallback((e: any) => {
-    if (e.key === "map") {
+    if (e.key === 'map') {
       return 800;
     }
     return 1000;
@@ -105,7 +95,7 @@ const ParallaxCarousel = function <T>({
       key={i}
       style={{
         // background: item.color,
-        height: "100%",
+        height: '100%',
       }}
       leaveChildHide
     >
@@ -113,7 +103,7 @@ const ParallaxCarousel = function <T>({
         animConfig={imgAnim}
         duration={getDuration}
         delay={[i ? 300 : delay, 0]}
-        ease={["easeOutCubic", "easeInQuad"]}
+        ease={['easeOutCubic', 'easeInQuad']}
         key="img-wrapper"
       >
         {renderLeftChildren(item)}
@@ -124,11 +114,7 @@ const ParallaxCarousel = function <T>({
   const rightQueueAnim = list.map((item, i) => {
     return (
       <Element key={i}>
-        <QueueAnim
-          type="bottom"
-          duration={1000}
-          delay={[i ? 800 : delay + 500, 0]}
-        >
+        <QueueAnim type="bottom" duration={1000} delay={[i ? 800 : delay + 500, 0]}>
           {renderRightChildren(item)}
         </QueueAnim>
       </Element>
@@ -140,7 +126,7 @@ const ParallaxCarousel = function <T>({
       // style={{ background: dataArray[showInt].background }}
     >
       <div
-        className={classNames("relative mx-auto", {
+        className={classNames('relative mx-auto', {
           [className!]: className,
         })}
         style={{
@@ -177,10 +163,7 @@ const ParallaxCarousel = function <T>({
         >
           {rightQueueAnim}
         </BannerAnim>
-        <TweenOneGroup
-          enter={{ opacity: 0, type: "from" }}
-          leave={{ opacity: 0 }}
-        >
+        <TweenOneGroup enter={{ opacity: 0, type: 'from' }} leave={{ opacity: 0 }}>
           {showInt && (
             <LeftCircleOutlined
               onClick={onLeft}
@@ -199,9 +182,7 @@ const ParallaxCarousel = function <T>({
   );
 };
 
-const ParallaxCarouselSuspense = function <T>(
-  props: IParallaxCarouselProps<T>
-) {
+const ParallaxCarouselSuspense = function <T>(props: IParallaxCarouselProps<T>) {
   return (
     <Suspense>
       <ParallaxCarousel<T> {...props} />

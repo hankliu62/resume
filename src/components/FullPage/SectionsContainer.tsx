@@ -1,17 +1,18 @@
-import throttle from "lodash/throttle";
+import throttle from 'lodash/throttle';
+import type {
+  CSSProperties,
+  ReactNode} from 'react';
 import React, {
   Children,
   cloneElement,
-  CSSProperties,
-  ReactNode,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-} from "react";
+} from 'react';
 
-import SectionContext from "./sectionContext";
+import SectionContext from './sectionContext';
 
 type TScrollCallbackParams = {
   activeSection: number;
@@ -45,12 +46,12 @@ const SectionsContainer = ({
   verticalAlign = false,
   scrollBar = false,
   navigation = true,
-  className = "SectionContainer",
-  sectionClassName = "Section",
+  className = 'SectionContainer',
+  sectionClassName = 'Section',
   anchors = [],
-  activeClass = "active",
-  sectionPaddingTop = "0",
-  sectionPaddingBottom = "0",
+  activeClass = 'active',
+  sectionPaddingTop = '0',
+  sectionPaddingBottom = '0',
   arrowNavigation = true,
   activeSection = 0,
   touchNavigation = true,
@@ -58,14 +59,12 @@ const SectionsContainer = ({
   navigationAnchorClass,
   navigationClass,
 }: ISectionsContainerProps) => {
-  const [stateActiveSection, setStateActiveSection] =
-    useState<number>(activeSection);
+  const [stateActiveSection, setStateActiveSection] = useState<number>(activeSection);
   const stateActiveSectionRef = useRef<number>(stateActiveSection);
 
   const [scrollingStarted, setScrollingStarted] = useState<boolean>(false);
   const scrollingStartedRef = useRef<boolean>(false);
-  const [sectionScrolledPosition, setSectionScrolledPosition] =
-    useState<number>(0);
+  const [sectionScrolledPosition, setSectionScrolledPosition] = useState<number>(0);
 
   const scrollCallbackParams = useMemo<TScrollCallbackParams>(
     () => ({
@@ -73,13 +72,11 @@ const SectionsContainer = ({
       scrollingStarted,
       sectionScrolledPosition,
     }),
-    [scrollingStarted, sectionScrolledPosition, stateActiveSection]
+    [scrollingStarted, sectionScrolledPosition, stateActiveSection],
   );
 
   const resetScrollTimer = useRef<number>();
-  const childrenLength = useRef<number>(
-    children ? (children as any).length : 0
-  );
+  const childrenLength = useRef<number>(children ? (children as any).length : 0);
 
   const contextData = useMemo(() => {
     return {
@@ -88,12 +85,7 @@ const SectionsContainer = ({
       sectionPaddingTop: sectionPaddingTop,
       sectionPaddingBottom: sectionPaddingBottom,
     };
-  }, [
-    verticalAlign,
-    sectionClassName,
-    sectionPaddingTop,
-    sectionPaddingBottom,
-  ]);
+  }, [verticalAlign, sectionClassName, sectionPaddingTop, sectionPaddingBottom]);
 
   const addChildrenWithAnchorId = useCallback(() => {
     let index = 0;
@@ -112,11 +104,11 @@ const SectionsContainer = ({
   }, [anchors, children]);
 
   const addOverflowToBody = useCallback(() => {
-    document.querySelector("body")!.style.overflow = "hidden";
+    document.querySelector('body')!.style.overflow = 'hidden';
   }, []);
 
   const removeOverflowFromBody = useCallback(() => {
-    document.querySelector("body")!.style.overflow = "initial";
+    document.querySelector('body')!.style.overflow = 'initial';
   }, []);
 
   const handleScrollCallback = useCallback(() => {
@@ -143,17 +135,17 @@ const SectionsContainer = ({
   const addActiveClass = useCallback(() => {
     // 先移除 Active className
     const activeLinks = document.querySelectorAll(
-      `a:not([href="#${anchors[stateActiveSectionRef.current]}"])`
+      `a:not([href="#${anchors[stateActiveSectionRef.current]}"])`,
     );
 
     if (activeLinks) {
       for (const activeLink of activeLinks) {
-        const className = activeLink.className
-          .replaceAll(activeClass, "")
-          .replaceAll(/\s+/g, " ")
+        const elemClassName = activeLink.className
+          .replaceAll(activeClass, '')
+          .replaceAll(/\s+/g, ' ')
           .trim();
 
-        activeLink.className = `${className} ${activeClass}`.trim();
+        activeLink.className = `${elemClassName} ${activeClass}`.trim();
       }
     }
   }, [activeClass, anchors]);
@@ -166,9 +158,9 @@ const SectionsContainer = ({
 
       // 设置Hash
       const hash = anchors[index];
-      const nextHash = "#" + hash;
+      const nextHash = '#' + hash;
       if (window.location.hash !== nextHash) {
-        window.location.hash = "#" + hash;
+        window.location.hash = '#' + hash;
       }
 
       // 设置translate偏移量和当前选中的Section
@@ -186,15 +178,15 @@ const SectionsContainer = ({
       // 修改当前选中的Section时，添加对应的active class
       addActiveClass();
     },
-    [anchors, addActiveClass, handleScrollCallback, resetScroll]
+    [anchors, addActiveClass, handleScrollCallback, resetScroll],
   );
 
   const handleAnchor = useCallback(() => {
     const hash = window.location.hash.slice(1);
-    const activeSection = anchors.indexOf(hash);
+    const nextActiveSection = anchors.indexOf(hash);
 
-    if (stateActiveSectionRef.current !== activeSection) {
-      setAnchorAndSectionTransition(activeSection);
+    if (stateActiveSectionRef.current !== nextActiveSection) {
+      setAnchorAndSectionTransition(nextActiveSection);
     }
   }, [anchors, setAnchorAndSectionTransition]);
 
@@ -212,24 +204,24 @@ const SectionsContainer = ({
   const handleArrowKeys = useCallback(
     (e: any) => {
       const event = window.event || e;
-      const activeSection =
+      const nextActiveSection =
         event.keyCode === 38 || event.keyCode === 37
           ? stateActiveSectionRef.current - 1
           : event.keyCode === 40 || event.keyCode === 39
-          ? stateActiveSectionRef.current + 1
-          : -1;
+            ? stateActiveSectionRef.current + 1
+            : -1;
 
       if (
         scrollingStartedRef.current ||
-        activeSection < 0 ||
-        childrenLength.current === activeSection
+        nextActiveSection < 0 ||
+        childrenLength.current === nextActiveSection
       ) {
         return false;
       }
 
-      setAnchorAndSectionTransition(activeSection);
+      setAnchorAndSectionTransition(nextActiveSection);
     },
-    [setAnchorAndSectionTransition]
+    [setAnchorAndSectionTransition],
   );
 
   // 处理滚轮事件的滚动
@@ -237,35 +229,35 @@ const SectionsContainer = ({
     throttle((event: any) => {
       const e = window.event || event;
       const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
-      const activeSection = stateActiveSectionRef.current - delta;
+      const nextActiveSection = stateActiveSectionRef.current - delta;
 
       if (
         scrollingStartedRef.current ||
-        activeSection < 0 ||
-        childrenLength.current === activeSection
+        nextActiveSection < 0 ||
+        childrenLength.current === nextActiveSection
       ) {
         return false;
       }
 
-      setAnchorAndSectionTransition(activeSection);
+      setAnchorAndSectionTransition(nextActiveSection);
     }, 100),
-    [setAnchorAndSectionTransition]
+    [setAnchorAndSectionTransition],
   );
 
   // 处理wheel事件
   useEffect(() => {
-    window.addEventListener("wheel", handleMouseWheel, false);
-    window.addEventListener("mousewheel", handleMouseWheel, false);
-    window.addEventListener("DOMMouseScroll", handleMouseWheel, false);
+    window.addEventListener('wheel', handleMouseWheel, false);
+    window.addEventListener('mousewheel', handleMouseWheel, false);
+    window.addEventListener('DOMMouseScroll', handleMouseWheel, false);
     return () => {
-      window.removeEventListener("wheel", handleMouseWheel);
-      window.removeEventListener("mousewheel", handleMouseWheel);
-      window.removeEventListener("DOMMouseScroll", handleMouseWheel);
+      window.removeEventListener('wheel', handleMouseWheel);
+      window.removeEventListener('mousewheel', handleMouseWheel);
+      window.removeEventListener('DOMMouseScroll', handleMouseWheel);
     };
   }, [handleMouseWheel]);
 
   const handleTouchNav = useCallback(() => {
-    const touchsurface = document.querySelector("." + className);
+    const touchsurface = document.querySelector('.' + className);
     let swipedir: string;
     let startX: number;
     let startY: number;
@@ -277,8 +269,8 @@ const SectionsContainer = ({
     let elapsedTime: number;
     let startTime: number;
 
-    const handleswipe = function (swipedir: string) {
-      console.log(swipedir);
+    const handleswipe = function (swipeDir: string) {
+      console.log(swipeDir);
     };
 
     const handleTouchNavStart = (e: any) => {
@@ -286,7 +278,7 @@ const SectionsContainer = ({
         return;
       }
       const touchobj = e.changedTouches[0];
-      swipedir = "none";
+      swipedir = 'none';
       startX = touchobj.pageX;
       startY = touchobj.pageY;
       startTime = Date.now();
@@ -315,32 +307,25 @@ const SectionsContainer = ({
         Math.abs(distY) >= threshold &&
         Math.abs(distX) <= restraint
       ) {
-        swipedir = distY < 0 ? "up" : "down";
-        const direction =
-          stateActiveSectionRef.current + 1 * (swipedir === "down" ? -1 : 1);
+        swipedir = distY < 0 ? 'up' : 'down';
+        const direction = stateActiveSectionRef.current + 1 * (swipedir === 'down' ? -1 : 1);
         setAnchorAndSectionTransition(direction);
       }
       handleswipe(swipedir);
     };
 
-    touchsurface &&
-      touchsurface.addEventListener("touchstart", handleTouchNavStart, false);
+    touchsurface && touchsurface.addEventListener('touchstart', handleTouchNavStart, false);
 
-    touchsurface &&
-      touchsurface.addEventListener("touchmove", handleTouchNavMove, false);
+    touchsurface && touchsurface.addEventListener('touchmove', handleTouchNavMove, false);
 
-    touchsurface &&
-      touchsurface.addEventListener("touchend", handleTouchNavEnd, false);
+    touchsurface && touchsurface.addEventListener('touchend', handleTouchNavEnd, false);
 
     return () => {
-      touchsurface &&
-        touchsurface.removeEventListener("touchstart", handleTouchNavStart);
+      touchsurface && touchsurface.removeEventListener('touchstart', handleTouchNavStart);
 
-      touchsurface &&
-        touchsurface.removeEventListener("touchmove", handleTouchNavMove);
+      touchsurface && touchsurface.removeEventListener('touchmove', handleTouchNavMove);
 
-      touchsurface &&
-        touchsurface.removeEventListener("touchend", handleTouchNavEnd);
+      touchsurface && touchsurface.removeEventListener('touchend', handleTouchNavEnd);
     };
   }, [className, setAnchorAndSectionTransition]);
 
@@ -353,16 +338,16 @@ const SectionsContainer = ({
     removeOverflowFromBody();
 
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     if (!scrollBar) {
       addOverflowToBody();
       handleAnchor();
 
-      window.addEventListener("hashchange", handleAnchor, false);
+      window.addEventListener('hashchange', handleAnchor, false);
 
       if (arrowNavigation) {
-        window.addEventListener("keydown", handleArrowKeys);
+        window.addEventListener('keydown', handleArrowKeys);
       }
 
       if (touchNavigation) {
@@ -371,41 +356,40 @@ const SectionsContainer = ({
     }
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("hashchange", handleAnchor);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('hashchange', handleAnchor);
 
       if (arrowNavigation) {
-        window.removeEventListener("keydown", handleArrowKeys);
+        window.removeEventListener('keydown', handleArrowKeys);
       }
     };
   }, []);
 
   const renderNavigation = () => {
     const navigationStyle: CSSProperties = {
-      position: "fixed",
-      zIndex: "10",
-      right: "20px",
-      top: "50%",
-      transform: "translate(-50%, -50%)",
+      position: 'fixed',
+      zIndex: '10',
+      right: '20px',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
     };
 
     const anchorElements = anchors.map((link: string, index: number) => {
       const anchorStyle: CSSProperties = {
-        display: "block",
-        margin: "10px",
-        borderRadius: "100%",
-        backgroundColor: "#556270",
-        padding: "5px",
-        transition: "all 0.2s",
-        transform: stateActiveSection === index ? "scale(1.3)" : "none",
+        display: 'block',
+        margin: '10px',
+        borderRadius: '100%',
+        backgroundColor: '#556270',
+        padding: '5px',
+        transition: 'all 0.2s',
+        transform: stateActiveSection === index ? 'scale(1.3)' : 'none',
       };
 
       return (
-        // eslint-disable-next-line jsx-a11y/anchor-has-content
         <a
           href={`#${link}`}
           key={link}
-          className={navigationAnchorClass || "Navigation-Anchor"}
+          className={navigationAnchorClass || 'Navigation-Anchor'}
           style={navigationAnchorClass ? {} : anchorStyle}
         />
       );
@@ -413,7 +397,7 @@ const SectionsContainer = ({
 
     return (
       <div
-        className={navigationClass || "Navigation"}
+        className={navigationClass || 'Navigation'}
         style={navigationClass ? {} : navigationStyle}
       >
         {anchorElements}
@@ -422,9 +406,9 @@ const SectionsContainer = ({
   };
 
   const containerStyle: CSSProperties = {
-    height: "100%",
-    width: "100%",
-    position: "relative",
+    height: '100%',
+    width: '100%',
+    position: 'relative',
     transform: `translate3d(0px, ${sectionScrolledPosition}px, 0px)`,
     transition: `all ${delay}ms ease`,
   };

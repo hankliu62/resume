@@ -1,24 +1,21 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import classNames from "classnames";
-import React, {
+
+import classNames from 'classnames';
+import type {
   CSSProperties,
-  ReactElement,
+  ReactElement} from 'react';
+import React, {
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-} from "react";
+} from 'react';
 
 interface ICarousel3dProps {
   children: ReactElement[];
   style: Partial<CSSProperties>;
   className: string;
-  onChange: (arg: {
-    current: number;
-    rotate: number;
-    eventType: string;
-  }) => void;
+  onChange: (arg: { current: number; rotate: number; eventType: string }) => void;
   tilt: string;
   duration: string;
   ease: string;
@@ -41,9 +38,9 @@ const DefaultWidth = 360;
 export default function Carousel3d({
   onChange = () => {},
   className,
-  tilt = "15rem",
-  duration = ".45s",
-  ease = "cubic-bezier(0.215, 0.61, 0.355, 1)",
+  tilt = '15rem',
+  duration = '.45s',
+  ease = 'cubic-bezier(0.215, 0.61, 0.355, 1)',
   blurIncrease = 8,
   opacityDecline = 0.1,
   opacityBasics = 0.5,
@@ -56,37 +53,28 @@ export default function Carousel3d({
   style = {},
 }: Partial<ICarousel3dProps>) {
   const zDpr = useMemo<number>(() => z * dpr, [z]);
-  const perspectiveDpr = useMemo<number>(
-    () => perspective * dpr,
-    [perspective]
-  );
+  const perspectiveDpr = useMemo<number>(() => perspective * dpr, [perspective]);
 
   // 子元素长度
   const childrenLength = useMemo<number>(
     () => Math.max(React.Children.toArray(children).length, childMaxLength),
-    [childMaxLength, children]
+    [childMaxLength, children],
   );
   // 偏移量
-  const angle = useMemo<number>(
-    () => DefaultWidth / childrenLength,
-    [childrenLength]
-  );
+  const angle = useMemo<number>(() => DefaultWidth / childrenLength, [childrenLength]);
   // body的长度
   const clientWidth = useRef<number>(0);
 
   // 旋转值
   const [rotate, setRotate] = useState<number>(-defaultCurrent * angle);
   // 偏移值
-  const [transition, setTransition] = useState<string>("none");
+  const [transition, setTransition] = useState<string>('none');
   // 当前选择的节点
   const [current, setCurrent] = useState<number>(defaultCurrent);
 
   const startX = useRef<number>(0);
 
-  const startRotate = useMemo<number>(
-    () => Math.round(rotate / angle) * angle,
-    [rotate, angle]
-  );
+  const startRotate = useMemo<number>(() => Math.round(rotate / angle) * angle, [rotate, angle]);
 
   useEffect(() => {
     clientWidth.current = document.body.clientWidth;
@@ -103,11 +91,11 @@ export default function Carousel3d({
 
   const onChangeEvent = useCallback(
     (
-      eventType: "move" | "end",
+      eventType: 'move' | 'end',
       data: {
         current?: number;
         rotate?: number;
-      }
+      },
     ) => {
       onChange({
         current,
@@ -116,7 +104,7 @@ export default function Carousel3d({
         ...data,
       });
     },
-    [current, onChange, rotate]
+    [current, onChange, rotate],
   );
 
   const onTouchStart = useCallback(
@@ -126,38 +114,32 @@ export default function Carousel3d({
       }
       startX.current = e.pageX || e.touches[0].pageX;
     },
-    [childrenLength]
+    [childrenLength],
   );
 
   const onTouchMove = useCallback(
     (e: MouseEvent & TouchEvent) => {
-      if (
-        (e.touches && e.touches.length > 1) ||
-        childrenLength <= 1 ||
-        !startX.current
-      ) {
+      if ((e.touches && e.touches.length > 1) || childrenLength <= 1 || !startX.current) {
         return;
       }
       const x = e.pageX || e.touches[0].pageX;
       const differ = (x - startX.current) * moveRange; // 幅度加大；
-      const rotate = startRotate + (differ / clientWidth.current) * angle;
-      const r =
-        (Math.abs(Math.ceil(rotate / DefaultWidth)) * DefaultWidth - rotate) %
-        DefaultWidth;
-      const current = Math.round(r / angle) % childrenLength;
+      const nextRotate = startRotate + (differ / clientWidth.current) * angle;
+      const r = (Math.abs(Math.ceil(nextRotate / DefaultWidth)) * DefaultWidth - nextRotate) % DefaultWidth;
+      const nextCurrent = Math.round(r / angle) % childrenLength;
 
-      console.log("onTouchMove", current);
+      console.log('onTouchMove', nextCurrent);
 
-      setRotate(rotate);
-      setCurrent(current);
-      setTransition("none");
+      setRotate(nextRotate);
+      setCurrent(nextCurrent);
+      setTransition('none');
 
-      onChangeEvent("move", {
-        current,
-        rotate,
+      onChangeEvent('move', {
+        current: nextCurrent,
+        rotate: nextRotate,
       });
     },
-    [angle, childrenLength, moveRange, onChangeEvent, startRotate]
+    [angle, childrenLength, moveRange, onChangeEvent, startRotate],
   );
 
   const onTouchEnd = useCallback(
@@ -173,24 +155,23 @@ export default function Carousel3d({
       const differ = x - startX.current;
       const n = differ > 0 ? 1 : -1;
       const newRotate =
-        startRotate +
-        n * angle * Math.round(Math.abs((rotate - startRotate) / angle));
+        startRotate + n * angle * Math.round(Math.abs((rotate - startRotate) / angle));
 
       setRotate(newRotate);
 
       startX.current = 0;
-      onChangeEvent("end", {
+      onChangeEvent('end', {
         rotate: newRotate,
       });
     },
-    [angle, childrenLength, onChangeEvent, rotate, startRotate]
+    [angle, childrenLength, onChangeEvent, rotate, startRotate],
   );
 
   useEffect(() => {
-    window.addEventListener("mouseup", onTouchEnd as any);
+    window.addEventListener('mouseup', onTouchEnd as any);
 
     return () => {
-      window.removeEventListener("mouseup", onTouchEnd as any);
+      window.removeEventListener('mouseup', onTouchEnd as any);
     };
   }, [onTouchEnd]);
 
@@ -200,23 +181,18 @@ export default function Carousel3d({
   const renderChildren = () => {
     const newChildren = React.Children.toArray(children) as ReactElement[];
     const length = newChildren.length;
-    const zDpr = z * dpr;
+    const nextZDpr = z * dpr;
     return newChildren.map((item, i) => {
       if (i >= childMaxLength) {
         return null;
       }
-      const transform = `rotateY(${
-        angle * i
-      }deg) translateZ(${zDpr}px) rotateY(-${angle * i}deg) `;
+      const transform = `rotateY(${angle * i}deg) translateZ(${nextZDpr}px) rotateY(-${angle * i}deg) `;
 
       const diffPosition = Math.abs(current - i);
 
       const center = Math.min(childMaxLength, length) / 2;
-      const index =
-        diffPosition > center ? center * 2 - diffPosition : diffPosition;
-      let opacity =
-        1 -
-        ((index - 1) * opacityDecline + opacityBasics * (diffPosition ? 1 : 0));
+      const index = diffPosition > center ? center * 2 - diffPosition : diffPosition;
+      let opacity = 1 - ((index - 1) * opacityDecline + opacityBasics * (diffPosition ? 1 : 0));
       opacity = opacity < 0.1 ? 0.1 : opacity;
       const animStyle: CSSProperties = {
         opacity,
@@ -229,7 +205,7 @@ export default function Carousel3d({
           className="absolute left-0 top-0"
           key={item.key}
           style={{
-            transformStyle: "preserve-3d",
+            transformStyle: 'preserve-3d',
             transform,
           }}
         >
@@ -243,9 +219,7 @@ export default function Carousel3d({
               className="m-auto overflow-hidden rounded-lg transition-[filter] duration-[0.45s]"
               style={{ ...animStyle }}
             >
-              <div className="transition-[opacity] duration-[0.65s]">
-                {item}
-              </div>
+              <div className="transition-[opacity] duration-[0.65s]">{item}</div>
             </div>
           </div>
         </div>
@@ -261,7 +235,7 @@ export default function Carousel3d({
       onMouseMove={onTouchMove as any}
       onTouchEnd={onTouchEnd as any}
       onMouseUp={onTouchEnd as any}
-      className={classNames("relative h-full w-full", {
+      className={classNames('relative h-full w-full', {
         [className!]: className,
       })}
     >
@@ -271,15 +245,13 @@ export default function Carousel3d({
           style={{
             ...style,
             perspective: perspectiveDpr,
-            transform: `translateY(-${tilt}) scale(${
-              (perspectiveDpr - zDpr) / perspectiveDpr
-            })`,
+            transform: `translateY(-${tilt}) scale(${(perspectiveDpr - zDpr) / perspectiveDpr})`,
           }}
         >
           <div
             className="w-full"
             style={{
-              transformStyle: "preserve-3d",
+              transformStyle: 'preserve-3d',
               transform: `translateY(${tilt}) rotateY(${rotate}deg)`,
               transition: transition,
             }}

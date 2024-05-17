@@ -1,18 +1,19 @@
-"use client";
+'use client';
 
-import classNames from "classnames";
-import throttle from "lodash/throttle";
-import React, { ReactElement, useCallback, useRef, useState } from "react";
+import classNames from 'classnames';
+import throttle from 'lodash/throttle';
+import type { ReactElement} from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
-import { Carousel } from "@/components";
-import Carousel3d from "@/components/Carousel3d";
-import LazyBgImage from "@/components/LazyBgImage";
-import LazyImage from "@/components/LazyImage";
+import { Carousel } from '@/components';
+import Carousel3d from '@/components/Carousel3d';
+import LazyBgImage from '@/components/LazyBgImage';
+import LazyImage from '@/components/LazyImage';
 // import ParallaxCarousel from "@/components/ParallaxCarousel";
-import * as Constants from "@/constants";
-import useMobile from "@/hooks/useMobile";
-import { isSafari } from "@/utils/platform";
-import { getRoutePrefix } from "@/utils/route";
+import * as Constants from '@/constants';
+import useMobile from '@/hooks/useMobile';
+import { isSafari } from '@/utils/platform';
+import { getRoutePrefix } from '@/utils/route';
 
 type TExperience = (typeof Constants.Experiences)[0];
 
@@ -43,7 +44,7 @@ export default function ResumeExperience() {
       const diffTop = event.clientY - experienceRef.current!.offsetTop;
       setThrottleRotates(diffLeft, diffTop);
     },
-    [isMobile, setThrottleRotates]
+    [isMobile, setThrottleRotates],
   );
 
   const onMouseLeave = useCallback(() => {
@@ -57,16 +58,12 @@ export default function ResumeExperience() {
 
   const renderExperienceImage = (experience: TExperience) => (
     <div
-      className={classNames("flex w-full items-center justify-center", {
-        "!w-full": isMobile,
-        "absolute top-1/2 -translate-y-1/2": !isMobile,
+      className={classNames('flex w-full items-center justify-center', {
+        '!w-full': isMobile,
+        'absolute top-1/2 -translate-y-1/2': !isMobile,
       })}
     >
-      <LazyImage
-        className="max-w-[80px]"
-        src={getRoutePrefix() + experience.image}
-        alt="Company"
-      />
+      <LazyImage className="max-w-[80px]" src={getRoutePrefix() + experience.image} alt="Company" />
     </div>
   );
 
@@ -74,28 +71,28 @@ export default function ResumeExperience() {
     const { company, time, post, works } = experience;
     return (
       <div
-        className={classNames("relative w-full px-[30px]", {
-          "!px-4": isMobile,
-          "h-full": !isMobile,
+        className={classNames('relative w-full px-[30px]', {
+          '!px-4': isMobile,
+          'h-full': !isMobile,
         })}
       >
         <h5
-          className={classNames("mb-[20px] text-[20px]", {
-            "!mb-2 text-center !text-xl": isMobile,
+          className={classNames('mb-[20px] text-[20px]', {
+            '!mb-2 text-center !text-xl': isMobile,
           })}
         >
           {company}
         </h5>
         <div
-          className={classNames("mb-[15px] text-[18px]", {
-            "!mb-1 text-center !text-lg": isMobile,
+          className={classNames('mb-[15px] text-[18px]', {
+            '!mb-1 text-center !text-lg': isMobile,
           })}
         >
           {time}
         </div>
         <div
-          className={classNames("mb-[15px] text-[18px]", {
-            "!mb-1 text-center !text-lg": isMobile,
+          className={classNames('mb-[15px] text-[18px]', {
+            '!mb-1 text-center !text-lg': isMobile,
           })}
         >
           {post}
@@ -104,8 +101,8 @@ export default function ResumeExperience() {
           {works.map((work) => {
             return (
               <li
-                className={classNames("leading-[1.6]", {
-                  "!text-base": isMobile,
+                className={classNames('leading-[1.6]', {
+                  '!text-base': isMobile,
                 })}
                 key={work}
               >
@@ -123,9 +120,9 @@ export default function ResumeExperience() {
       const { company } = experience;
       return (
         <div
-          className={classNames("experience-wrapper bg-white", {
-            "min-h-[512px]": isMobile,
-            "h-full": !isMobile,
+          className={classNames('experience-wrapper bg-white', {
+            'min-h-[512px]': isMobile,
+            'h-full': !isMobile,
           })}
           key={company}
           style={{
@@ -133,19 +130,19 @@ export default function ResumeExperience() {
           }}
         >
           <div
-            className={classNames("experience-item", {
-              "flex flex-col": isMobile,
+            className={classNames('experience-item', {
+              'flex flex-col': isMobile,
             })}
           >
             <div
-              className={classNames("relative", {
-                "w-[140px]": !isMobile,
+              className={classNames('relative', {
+                'w-[140px]': !isMobile,
               })}
             >
               {renderExperienceImage(experience)}
             </div>
             <div
-              className={classNames("relative", {
+              className={classNames('relative', {
                 "flex-1 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-[1px] before:bg-[#e8e8e8] before:content-['']":
                   !isMobile,
               })}
@@ -169,24 +166,21 @@ export default function ResumeExperience() {
         <div
           className="absolute left-0 top-0 h-full w-full bg-[linear-gradient(to_right,_#fafafa,_#aaa)]"
           style={{
-            mixBlendMode: "multiply",
+            mixBlendMode: 'multiply',
             inset: 0,
           }}
         />
       </LazyBgImage>
 
       <div
-        className={classNames(
-          "relative z-10 flex h-full flex-col items-center justify-center",
-          {
-            "!w-full": isMobile,
-          }
-        )}
+        className={classNames('relative z-10 flex h-full flex-col items-center justify-center', {
+          '!w-full': isMobile,
+        })}
       >
         <div className="title-wrapper">
           <h1
-            className={classNames("title", {
-              "!text-[2.5rem]": isMobile,
+            className={classNames('title', {
+              '!text-[2.5rem]': isMobile,
             })}
           >
             工作经历
@@ -194,19 +188,15 @@ export default function ResumeExperience() {
         </div>
 
         <div
-          className={classNames("experiences-wrapper", {
-            "!h-[60vh] !w-full": isMobile,
+          className={classNames('experiences-wrapper', {
+            '!h-[60vh] !w-full': isMobile,
           })}
           onMouseMove={onMouseMove}
           onMouseLeave={onMouseLeave}
           ref={experienceRef}
         >
           {isMobile ? (
-            <Carousel3d
-              childMaxLength={experiencesLength}
-              z={540}
-              blurIncrease={3}
-            >
+            <Carousel3d childMaxLength={experiencesLength} z={540} blurIncrease={3}>
               {renderExperiences()}
             </Carousel3d>
           ) : (

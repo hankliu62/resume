@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Modal } from "antd";
-import classNames from "classnames";
-import React from "react";
+import { Modal } from 'antd';
+import classNames from 'classnames';
+import React from 'react';
 
 export interface IMessageModalProps {
   title: string;
@@ -25,8 +25,8 @@ export default function MessageModal({
       title={title}
       onCancel={onCancel}
       onOk={onCancel}
-      wrapClassName={classNames("message-modal", {
-        "mobile-message-modal": isMobile,
+      wrapClassName={classNames('message-modal', {
+        'mobile-message-modal': isMobile,
       })}
     >
       {children}

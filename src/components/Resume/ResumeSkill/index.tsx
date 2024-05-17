@@ -1,14 +1,14 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-"use client";
 
-import { Popover, Progress } from "antd";
-import classNames from "classnames";
-import React from "react";
+'use client';
 
-import LazyBgImage from "@/components/LazyBgImage";
-import * as Constants from "@/constants";
-import useMobile from "@/hooks/useMobile";
-import { getRoutePrefix } from "@/utils/route";
+import { Popover, Progress } from 'antd';
+import classNames from 'classnames';
+import React from 'react';
+
+import LazyBgImage from '@/components/LazyBgImage';
+import * as Constants from '@/constants';
+import useMobile from '@/hooks/useMobile';
+import { getRoutePrefix } from '@/utils/route';
 
 const SkillPopover = ({
   popover,
@@ -23,20 +23,15 @@ const SkillPopover = ({
 }) => {
   return (
     <div
-      className={classNames("skill-popover-wrapper", {
-        "skill-popover-wrapper-mobile": isMobile,
+      className={classNames('skill-popover-wrapper', {
+        'skill-popover-wrapper-mobile': isMobile,
       })}
     >
       <h5 className="skill-popover-title text-center">{popover}</h5>
       <div className="mb-[8px]">
         <label className="mb-1 block text-base font-medium">熟练度: </label>
         <div className="skill-popover-progress">
-          <Progress
-            percent={percent}
-            showInfo={false}
-            strokeColor="#00b38a"
-            strokeWidth={12}
-          />
+          <Progress percent={percent} showInfo={false} strokeColor="#00b38a" strokeWidth={12} />
         </div>
       </div>
       <div>
@@ -67,24 +62,21 @@ export default function ResumeSkill() {
         <div
           className="absolute left-0 top-0 h-full w-full bg-[linear-gradient(to_right,_#fafafa,_#aaa)]"
           style={{
-            mixBlendMode: "multiply",
+            mixBlendMode: 'multiply',
             inset: 0,
           }}
         />
       </LazyBgImage>
 
       <div
-        className={classNames(
-          "relative z-10 flex h-full flex-col items-center justify-center",
-          {
-            "!w-full": isMobile,
-          }
-        )}
+        className={classNames('relative z-10 flex h-full flex-col items-center justify-center', {
+          '!w-full': isMobile,
+        })}
       >
         <div className="title-wrapper">
           <h2
-            className={classNames("title", {
-              "!text-[2.5rem]": isMobile,
+            className={classNames('title', {
+              '!text-[2.5rem]': isMobile,
             })}
           >
             技能
@@ -93,23 +85,23 @@ export default function ResumeSkill() {
 
         <div className="skills-wrapper">
           <ul
-            className={classNames("skills", {
-              "!flex justify-between": isMobile,
+            className={classNames('skills', {
+              '!flex justify-between': isMobile,
             })}
           >
-            {Constants.Skills.map((skill, index) => {
+            {Constants.Skills.map((skill) => {
               const { type, popover, percent, contexts } = skill;
               return (
                 <li
-                  className={classNames("skill relative", `skill-${type}`, {
-                    "!w-[33.3%]": isMobile,
+                  className={classNames('skill relative', `skill-${type}`, {
+                    '!w-[33.3%]': isMobile,
                   })}
                   key={type}
                 >
                   <Popover
                     placement="top"
-                    overlayClassName={classNames("skill-popover", {
-                      "skill-popover-mobile": isMobile,
+                    overlayClassName={classNames('skill-popover', {
+                      'skill-popover-mobile': isMobile,
                     })}
                     content={
                       <SkillPopover
@@ -123,11 +115,11 @@ export default function ResumeSkill() {
                     <LazyBgImage
                       fallbackSrc={`${getRoutePrefix()}/images/resume/loading.gif`}
                       className={classNames(
-                        "skill-wrapper group relative flex items-center bg-white bg-[length:86px_86px] bg-center bg-no-repeat transition-all hover:bg-[length:92px_92px]",
+                        'skill-wrapper group relative flex items-center bg-white bg-[length:86px_86px] bg-center bg-no-repeat transition-all hover:bg-[length:92px_92px]',
                         {
-                          "!h-28 !w-28 !bg-[length:3rem_3rem] hover:!bg-[length:2.5rem_2.5rem]":
+                          '!h-28 !w-28 !bg-[length:3rem_3rem] hover:!bg-[length:2.5rem_2.5rem]':
                             isMobile,
-                        }
+                        },
                       )}
                       style={{
                         backgroundImage: `url(
@@ -140,7 +132,7 @@ export default function ResumeSkill() {
                         {isMobile ? (
                           <div
                             className="text-center text-base font-medium text-white"
-                            style={{ mixBlendMode: "color-dodge" }}
+                            style={{ mixBlendMode: 'color-dodge' }}
                           >{`熟练度 ${percent}%`}</div>
                         ) : (
                           <Progress
@@ -159,11 +151,11 @@ export default function ResumeSkill() {
             })}
             {!!(isMobile && Constants.Skills.length % 3 !== 0) &&
               Array.from({ length: 3 - (Constants.Skills.length % 3) })
-                .fill("1")
+                .fill('1')
                 .map((item, index) => (
                   <li
-                    className={classNames("skill relative", {
-                      "!w-[33.3%]": isMobile,
+                    className={classNames('skill relative', {
+                      '!w-[33.3%]': isMobile,
                     })}
                     key={(item as string) + index}
                   >

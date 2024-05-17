@@ -1,9 +1,9 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+ 
+ 
 // @ts-nocheck
 
-import PropTypes from "prop-types";
-import React from "react";
+import PropTypes from 'prop-types';
+import React from 'react';
 
 // const currentDpr = window.devicePixelRatio;
 // const defaultDpr = 2; // sketch 里用的是 iphone 6 尺寸;
@@ -16,7 +16,7 @@ function isEqual(source: object, target: object) {
     keys.every((key) =>
       source[key] instanceof Object
         ? isEqual(source[key], target[key])
-        : source[key] === target[key]
+        : source[key] === target[key],
     )
   );
 }
@@ -40,9 +40,9 @@ class CarouselThreeD extends React.PureComponent {
   };
   static defaultProps = {
     onChange: () => {},
-    tilt: "15rem",
-    duration: ".45s",
-    ease: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+    tilt: '15rem',
+    duration: '.45s',
+    ease: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
     blurIncrease: 8,
     opacityDecline: 0.1,
     opacityBasics: 0.5,
@@ -58,12 +58,12 @@ class CarouselThreeD extends React.PureComponent {
     this.state = {
       rotate: -props.current * this.angle,
       current: props.current,
-      transition: "none",
+      transition: 'none',
     };
   }
   componentDidMount() {
     this.w = document.body.clientWidth;
-    window.addEventListener("mouseup", this.onTouchEnd);
+    window.addEventListener('mouseup', this.onTouchEnd);
   }
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
@@ -103,40 +103,31 @@ class CarouselThreeD extends React.PureComponent {
     this.startRotate = Math.round(this.state.rotate / this.angle) * this.angle; // 偏移修复;
   };
   onTouchMove = (e) => {
-    if (
-      (e.touches && e.touches.length > 1) ||
-      this.length <= 1 ||
-      !this.startX
-    ) {
+    if ((e.touches && e.touches.length > 1) || this.length <= 1 || !this.startX) {
       return;
     }
     const x = e.pageX || e.touches[0].pageX;
     const differ = (x - this.startX) * this.props.moveRange; // 幅度加大；
     const rotate = this.startRotate + (differ / this.w) * this.angle;
-    const r =
-      (Math.abs(Math.ceil(this.state.rotate / 360)) * 360 - rotate) % 360;
+    const r = (Math.abs(Math.ceil(this.state.rotate / 360)) * 360 - rotate) % 360;
     const current = Math.round(r / this.angle) % this.length;
     this.setState(
       {
         rotate,
         current,
-        transition: "none",
+        transition: 'none',
       },
       () => {
         this.props.onChange({
           current,
           rotate,
-          eventType: "move",
+          eventType: 'move',
         });
-      }
+      },
     );
   };
   onTouchEnd = (e) => {
-    if (
-      (e.changedTouches && e.changedTouches.length > 1) ||
-      this.length <= 1 ||
-      !this.startX
-    ) {
+    if ((e.changedTouches && e.changedTouches.length > 1) || this.length <= 1 || !this.startX) {
       return;
     }
     const x = e.pageX || e.changedTouches[0].pageX;
@@ -145,9 +136,7 @@ class CarouselThreeD extends React.PureComponent {
     const n = differ > 0 ? 1 : -1;
     const newRotate =
       this.startRotate +
-      n *
-        this.angle *
-        Math.round(Math.abs((rotate - this.startRotate) / this.angle));
+      n * this.angle * Math.round(Math.abs((rotate - this.startRotate) / this.angle));
     this.setState(
       {
         rotate: newRotate,
@@ -158,15 +147,14 @@ class CarouselThreeD extends React.PureComponent {
         this.props.onChange({
           current,
           rotate: newRotate,
-          eventType: "end",
+          eventType: 'end',
         });
-      }
+      },
     );
   };
   setLengthAndAngle = (props) => {
     this.length = React.Children.toArray(props.children).length;
-    this.length =
-      this.length > props.childMaxLength ? props.childMaxLength : this.length;
+    this.length = this.length > props.childMaxLength ? props.childMaxLength : this.length;
     this.angle = 360 / this.length;
   };
   getAnimStyle = (n, length) => {
@@ -197,19 +185,15 @@ class CarouselThreeD extends React.PureComponent {
       }deg) translateZ(${zDpr}px) rotateY(-${this.angle * i}deg) `;
       const animStyle = this.getAnimStyle(
         Math.abs(this.state.current - i),
-        length > childMaxLength ? childMaxLength : length
+        length > childMaxLength ? childMaxLength : length,
       );
       const style = {
-        transformStyle: "preserve-3d",
+        transformStyle: 'preserve-3d',
         transform,
         // opacity: animStyle.opacity, 留坑，preserve-3d 不可以与 opacity 同时使用，排查了一下午
       };
       return (
-        <div
-          className="itemWrapper absolute left-0 top-0"
-          key={item.key}
-          style={style}
-        >
+        <div className="itemWrapper absolute left-0 top-0" key={item.key} style={style}>
           <div
             className="rotateLayer"
             style={{
@@ -241,17 +225,17 @@ class CarouselThreeD extends React.PureComponent {
     const perspectiveDpr = perspective * dpr;
     const childrenToRender = this.getChildrenToRender(children, perspective);
     for (const k of [
-      "tilt",
-      "duration",
-      "ease",
-      "blurIncrease",
-      "opacityDecline",
-      "opacityBasics",
-      "moveRange",
-      "childMaxLength",
-      "perspective",
-      "z",
-      "current",
+      'tilt',
+      'duration',
+      'ease',
+      'blurIncrease',
+      'opacityDecline',
+      'opacityBasics',
+      'moveRange',
+      'childMaxLength',
+      'perspective',
+      'z',
+      'current',
     ])
       delete props[k];
     return (
@@ -271,15 +255,13 @@ class CarouselThreeD extends React.PureComponent {
             style={{
               ...style,
               perspective: perspectiveDpr,
-              transform: `translateY(-${tilt}) scale(${
-                (perspectiveDpr - zDpr) / perspectiveDpr
-              })`,
+              transform: `translateY(-${tilt}) scale(${(perspectiveDpr - zDpr) / perspectiveDpr})`,
             }}
           >
             <div
               className="carouselContent w-full"
               style={{
-                transformStyle: "preserve-3d",
+                transformStyle: 'preserve-3d',
                 transform: `translateY(${tilt}) rotateY(${this.state.rotate}deg)`,
                 transition: this.state.transition,
               }}

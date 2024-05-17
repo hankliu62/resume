@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import classNames from "classnames";
-import React from "react";
+import classNames from 'classnames';
+import React from 'react';
 
-import LazyBgImage from "@/components/LazyBgImage";
-import LazyImage from "@/components/LazyImage";
-import * as Constants from "@/constants";
-import useMobile from "@/hooks/useMobile";
-import { getRoutePrefix } from "@/utils/route";
+import LazyBgImage from '@/components/LazyBgImage';
+import LazyImage from '@/components/LazyImage';
+import * as Constants from '@/constants';
+import useMobile from '@/hooks/useMobile';
+import { getRoutePrefix } from '@/utils/route';
 
 export default function ResumeIntroduction() {
   const isMobile = useMobile();
@@ -23,24 +23,21 @@ export default function ResumeIntroduction() {
         <div
           className="absolute left-0 top-0 h-full w-full bg-[linear-gradient(to_right,_#fafafa,_#aaa)]"
           style={{
-            mixBlendMode: "multiply",
+            mixBlendMode: 'multiply',
             inset: 0,
           }}
         />
       </LazyBgImage>
 
       <div
-        className={classNames(
-          "relative z-10 flex h-full flex-col items-center justify-center",
-          {
-            "!w-full": isMobile,
-          }
-        )}
+        className={classNames('relative z-10 flex h-full flex-col items-center justify-center', {
+          '!w-full': isMobile,
+        })}
       >
         <div className="title-wrapper">
           <h2
-            className={classNames("title", {
-              "!text-[2.5rem]": isMobile,
+            className={classNames('title', {
+              '!text-[2.5rem]': isMobile,
             })}
           >
             自我介绍
@@ -49,11 +46,11 @@ export default function ResumeIntroduction() {
 
         <div className="self-introduction-wrapper" data-aos="fade-up">
           <ol className="introductions">
-            <li className={classNames("introduction-item")}>
+            <li className={classNames('introduction-item')}>
               对前端方面有着浓厚的兴趣，
               {isMobile
-                ? "有着多年的前端工作经验"
-                : "这几年来的前端工作经验，使我对前端技术的热情高涨，实战方面得到提升，希望能够在前端这条路上一直走下去"}
+                ? '有着多年的前端工作经验'
+                : '这几年来的前端工作经验，使我对前端技术的热情高涨，实战方面得到提升，希望能够在前端这条路上一直走下去'}
               ；
             </li>
             <li className="introduction-item">
@@ -64,12 +61,10 @@ export default function ResumeIntroduction() {
             </li>
             <li className="introduction-item">
               对工作认真负责，
-              {isMobile ? "能" : "就是做好自己的本职工作，"}
+              {isMobile ? '能' : '就是做好自己的本职工作，'}
               在规定的时间内保质保量的完成任务；
             </li>
-            <li
-              className={classNames("introduction-item", { hidden: isMobile })}
-            >
+            <li className={classNames('introduction-item', { hidden: isMobile })}>
               学习能力强，前端技术主要在于自学。
             </li>
           </ol>
@@ -87,8 +82,8 @@ export default function ResumeIntroduction() {
                     alt=""
                   />
                   <div
-                    className={classNames("information-item-data break-all", {
-                      "text-xs": isMobile,
+                    className={classNames('information-item-data break-all', {
+                      'text-xs': isMobile,
                     })}
                   >
                     {value}

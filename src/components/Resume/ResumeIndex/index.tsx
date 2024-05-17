@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import classNames from "classnames";
-import React, { useEffect, useRef } from "react";
-import { ReactSVG } from "react-svg";
-import Typed from "typed.js";
+import classNames from 'classnames';
+import React, { useEffect, useRef } from 'react';
+import { ReactSVG } from 'react-svg';
+import Typed from 'typed.js';
 
-import * as Constants from "@/constants";
-import useMobile from "@/hooks/useMobile";
-import { getRoutePrefix } from "@/utils/route";
+import * as Constants from '@/constants';
+import useMobile from '@/hooks/useMobile';
+import { getRoutePrefix } from '@/utils/route';
 
 export default function ResumeIndex() {
   const isMobile = useMobile();
@@ -39,19 +39,16 @@ export default function ResumeIndex() {
         <div
           className="absolute left-0 top-0 h-full w-full bg-[linear-gradient(to_right_,_#fafafa_,_#aaa)]"
           style={{
-            mixBlendMode: "multiply",
+            mixBlendMode: 'multiply',
             inset: 0,
           }}
         />
       </div>
 
       <div
-        className={classNames(
-          "z-10 relative flex h-full flex-col items-center justify-center",
-          {
-            "!w-full": isMobile,
-          }
-        )}
+        className={classNames('relative z-10 flex h-full flex-col items-center justify-center', {
+          '!w-full': isMobile,
+        })}
       >
         <div className="avatar-wrapper hidden">
           <img
@@ -65,7 +62,7 @@ export default function ResumeIndex() {
           <div className="avatar relative h-[200px] w-[200px]">
             <div className="relative z-[3] h-[100px] overflow-hidden">
               <div
-                className={classNames("h-[200px] w-[200px] bg-cover p-[15px]")}
+                className={classNames('h-[200px] w-[200px] bg-cover p-[15px]')}
                 style={{
                   backgroundImage: `url(${getRoutePrefix()}/images/resume/avatar-adorn.svg)`,
                 }}
@@ -83,9 +80,7 @@ export default function ResumeIndex() {
             </div>
             <div className="relative z-[1] h-[100px] overflow-hidden">
               <div
-                className={classNames(
-                  "-mt-[100px] h-[200px] w-[200px] bg-cover p-[15px]"
-                )}
+                className={classNames('-mt-[100px] h-[200px] w-[200px] bg-cover p-[15px]')}
                 style={{
                   backgroundImage: `url(${getRoutePrefix()}/images/resume/avatar-adorn.svg)`,
                 }}
@@ -107,9 +102,8 @@ export default function ResumeIndex() {
 
         <div className="signature-wrapper">
           <p
-            className={classNames("signature text-gray-200", {
-              "min-h-[3.6rem] max-w-[100vw] break-all px-6 text-center":
-                isMobile,
+            className={classNames('signature text-gray-200', {
+              'min-h-[3.6rem] max-w-[100vw] break-all px-6 text-center': isMobile,
             })}
           >
             <span>「</span>
@@ -120,21 +114,17 @@ export default function ResumeIndex() {
 
         <div className="social-accounts-wrapper">
           <ul
-            className={classNames("social-accounts", {
-              "justify-between px-6": isMobile,
+            className={classNames('social-accounts', {
+              'justify-between px-6': isMobile,
             })}
           >
             {Constants.SocialAccounts.map((account) => {
               const { type, link, name, icon } = account;
               return (
                 <li
-                  className={classNames(
-                    "social-account",
-                    `social-account-${type}`,
-                    {
-                      "!mx-0 scale-[0.8]": isMobile,
-                    }
-                  )}
+                  className={classNames('social-account', `social-account-${type}`, {
+                    '!mx-0 scale-[0.8]': isMobile,
+                  })}
                   key={type}
                 >
                   <ReactSVG
@@ -148,10 +138,7 @@ export default function ResumeIndex() {
                     rel="noopener noreferrer external nofollow"
                     title={`刘小聪的社交账号-${name}`}
                   >
-                    <ReactSVG
-                      src={icon}
-                      className="social-account-icon hk-icon"
-                    />
+                    <ReactSVG src={icon} className="social-account-icon hk-icon" />
                   </a>
                 </li>
               );
