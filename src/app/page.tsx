@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { StyleProvider } from "@ant-design/cssinjs";
-import { FilePdfOutlined, UpOutlined } from "@ant-design/icons";
+import { StyleProvider } from '@ant-design/cssinjs';
+import { FilePdfOutlined, UpOutlined } from '@ant-design/icons';
 // 要收费(不再使用)
 // import ReactFullpage from "@fullpage/react-fullpage";
-import { ConfigProvider as AntdConfigProvider, Popover, Watermark } from "antd";
-import zhCN from "antd/locale/zh_CN";
+import { ConfigProvider as AntdConfigProvider, Popover, Watermark } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
 // import AOS from "aos";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from 'react';
 
-// import { Section, SectionsContainer } from "react-fullpage";
-import { Section, SectionsContainer } from "@/components/FullPage";
+// import { Section, SectionsContainer } from "@/components/FullPage";
+import FullPage from '@hankliu/rc-fullpage';
 import {
   ResumeArticle,
   ResumeExperience,
@@ -18,35 +18,35 @@ import {
   ResumeIntroduction,
   ResumeProject,
   ResumeSkill,
-} from "@/components/Resume";
-import useMobile from "@/hooks/useMobile";
-import { getRoutePrefix } from "@/utils/route";
+} from '@/components/Resume';
+import useMobile from '@/hooks/useMobile';
+import { getRoutePrefix } from '@/utils/route';
 
 const Options = {
-  activeClass: "active", // the class that is appended to the sections links
+  activeClass: 'active', // 当前正在显示的 Section 的 classname
   anchors: [
-    "resume-index",
-    "resume-introduction",
-    "resume-skill",
-    "resume-experience",
-    "resume-project",
-    "resume-article",
-  ], // the anchors for each sections
-  arrowNavigation: true, // use arrow keys
-  className: "resume-properties-section-container", // the class name for the section container
-  delay: 1000, // the scroll animation speed
-  navigation: false, // use dots navigatio
-  scrollBar: false, // use the browser default scrollbar
-  sectionClassName: "resume-properties-section resume-section-container", // the section class name
-  sectionPaddingTop: "0", // the section top padding
-  sectionPaddingBottom: "0", // the section bottom padding
-  verticalAlign: false, // align the content of each section vertical
-  touchNavigation: true,
+    'resume-index',
+    'resume-introduction',
+    'resume-skill',
+    'resume-experience',
+    'resume-project',
+    'resume-article',
+  ], // 对应 section 列表元素的锚点名称列表
+  shortcutKey: true, // 是否支持箭头快捷键
+  className: 'resume-properties-section-container', // 组件外层元素 classname
+  delay: 1000, // 滚动持续动画时间
+  dots: false, // 是否显示面板指示点
+  scrollBar: false, // 是否使用浏览器默认滚动条
+  sectionClassName: 'resume-properties-section resume-section-container', // 组件 Section 元素 classname
+  sectionPaddingTop: '0', // Section 元素的上边距
+  sectionPaddingBottom: '0', // Section 元素的下边距
+  verticalAlign: true, // 是否为垂直方向全屏滚动
+  touchable: true, // 是否支持 Touch 事件
 };
 
-interface IResumeProps {
-  isMobile: boolean;
-}
+// interface IResumeProps {
+//   isMobile: boolean;
+// }
 
 export default function Resume() {
   const isMobile = useMobile();
@@ -55,8 +55,8 @@ export default function Resume() {
       return {
         ...Options,
         navigation: false,
-        sectionPaddingTop: "0",
-        sectionPaddingBottom: "0",
+        sectionPaddingTop: '0',
+        sectionPaddingBottom: '0',
       };
     }
 
@@ -191,14 +191,14 @@ export default function Resume() {
 
   const renderSectionsContainer = () => {
     return (
-      <SectionsContainer {...options}>
-        <Section>{renderResumeIndex()}</Section>
-        <Section>{renderResumeIntroduction()}</Section>
-        <Section>{renderResumeSkill()}</Section>
-        <Section>{renderResumeExperience()}</Section>
-        <Section>{renderResumeProject()}</Section>
-        <Section>{renderResumeArticle()}</Section>
-      </SectionsContainer>
+      <FullPage {...options}>
+        <FullPage.Section>{renderResumeIndex()}</FullPage.Section>
+        <FullPage.Section>{renderResumeIntroduction()}</FullPage.Section>
+        <FullPage.Section>{renderResumeSkill()}</FullPage.Section>
+        <FullPage.Section>{renderResumeExperience()}</FullPage.Section>
+        <FullPage.Section>{renderResumeProject()}</FullPage.Section>
+        <FullPage.Section>{renderResumeArticle()}</FullPage.Section>
+      </FullPage>
     );
   };
 
@@ -208,7 +208,7 @@ export default function Resume() {
         <AntdConfigProvider locale={zhCN}>
           <Watermark
             content="HankLiu Resume"
-            font={{ color: "rgba(0, 0, 0, 0.1)" }}
+            font={{ color: 'rgba(0, 0, 0, 0.1)' }}
             className="flex h-full flex-1 flex-col"
           >
             {renderSectionsContainer()}
