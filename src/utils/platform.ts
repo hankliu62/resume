@@ -1,5 +1,5 @@
 export function isServer() {
-  return typeof window === "undefined";
+  return typeof window === 'undefined';
 }
 
 export function setPageTitle(title: string) {
@@ -11,17 +11,15 @@ export function setPageTitle(title: string) {
 }
 
 export function getUrl() {
-  return isServer()
-    ? ""
-    : window.location.href.replace(window.location.hash, "");
+  return isServer() ? '' : window.location.href.replace(window.location.hash, '');
 }
 
 export function getHref() {
-  return isServer() ? "" : window.location.href;
+  return isServer() ? '' : window.location.href;
 }
 
 export function getUrlOrigin() {
-  return isServer() ? "" : window.location.origin;
+  return isServer() ? '' : window.location.origin;
 }
 
 export function isDebugJSSDK() {
@@ -33,15 +31,15 @@ export function isWechat() {
 }
 
 export function getSignatureUrl() {
-  return isServer() ? "" : `${getUrlOrigin()}/v1/api/wechat/getJsConfig`;
+  return isServer() ? '' : `${getUrlOrigin()}/v1/api/wechat/getJsConfig`;
 }
 
 export function isBuildRelease() {
-  return process.env.NODE_ENV === "production";
+  return process.env.NODE_ENV === 'production';
 }
 
 export function isEnvProduction() {
-  return process.env.ENV === "production";
+  return process.env.ENV === 'production';
 }
 
 export function clientWidth() {
