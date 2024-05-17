@@ -1,18 +1,15 @@
+const fabric = require('@hankliu/fabric');
+
 module.exports = {
-  processors: [],
-  plugins: [],
-  extends: [
-    "stylelint-config-standard",
-    "stylelint-order",
-    "stylelint-config-recess-order",
-  ],
+  ...fabric.stylelint,
   rules: {
+    ...fabric.stylelint.rules,
     "at-rule-no-unknown": [
       true,
       {
         ignoreAtRules: ["tailwind"],
       },
     ],
-    "import-notation": "off",
+    "keyframes-name-pattern": null,
   }, // 可以自己自定一些规则
 };

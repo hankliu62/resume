@@ -39,3 +39,7 @@ next-env.d.ts
 .vscode
 
 dist
+
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
