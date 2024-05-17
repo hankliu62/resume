@@ -1,16 +1,16 @@
 /* stylelint-disable no-descending-specificity */
 
-@import '../styles/app.less';
-@import '../components/Carousel/index.less';
-@import '../components/MessageModal/index.less';
-@import '../components/QrcodeModal/index.less';
-@import '../components/Resume/ResumeArticle/index.less';
-@import '../components/Resume/ResumeExperience/index.less';
-@import '../components/Resume/ResumeIndex/index.less';
-@import '../components/Resume/ResumeIntroduction/index.less';
-@import '../components/Resume/ResumeProject/index.less';
-@import '../components/Resume/ResumeSkill/index.less';
-@import '../components/CarouselThreeD/index.less';
+@import url('../styles/app.less');
+@import url('../components/Carousel/index.less');
+@import url('../components/MessageModal/index.less');
+@import url('../components/QrcodeModal/index.less');
+@import url('../components/Resume/ResumeArticle/index.less');
+@import url('../components/Resume/ResumeExperience/index.less');
+@import url('../components/Resume/ResumeIndex/index.less');
+@import url('../components/Resume/ResumeIntroduction/index.less');
+@import url('../components/Resume/ResumeProject/index.less');
+@import url('../components/Resume/ResumeSkill/index.less');
+@import url('../components/CarouselThreeD/index.less');
 
 @slider-menus: index introduction skill experience project article;
 @slider-menus-position-y: -670px -1110px -1330px -450px -890px -10px;
@@ -22,20 +22,22 @@
   left: 2px;
   width: 200px;
   height: 200px;
-  background-image: url('/images/resume/slides/sides_sprites.png');
   content: "";
+  background-image: url('/images/resume/slides/sides_sprites.png');
   transform: scale(6 / 200);
   transform-origin: 0 0;
 }
 
 .resume-container {
   display: block;
+
   .resume-properties-section-container {
     .resume-section {
-      min-height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 100%;
+
       &.resume-section-index {
         background-image: radial-gradient(ellipse farthest-corner, #fff, #ddd);
       }
@@ -71,8 +73,8 @@
     position: fixed;
     bottom: 5px;
     left: 50%;
-    animation: upping 2s ease infinite;
     transform: translateX(-50%);
+    animation: upping 2s ease infinite;
 
     i {
       font-size: 30px;
@@ -84,18 +86,18 @@
     position: fixed;
     right: 30px;
     bottom: 10px;
+    z-index: 999;
     padding: 2px 10px;
     font-size: 14px;
     line-height: 22px;
     background-color: @theme-color;
     border-radius: 3px;
     box-shadow: 0 2px 3px @black-10;
-    z-index: 999;
 
     .link-pdf {
+      font-size: 0;
       color: @white;
       cursor: pointer;
-      font-size: 0;
 
       &:active,
       &:hover,
@@ -140,9 +142,9 @@
             width: 10px;
             height: 10px;
             margin: -5px 0 0 -5px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 50%;
             cursor: pointer;
+            background: rgb(0 0 0 / 70%);
+            border-radius: 50%;
             opacity: .1;
             transition: all .3s ease;
           }
@@ -172,34 +174,34 @@
           right: 36px;
           width: auto;
           height: 24px;
-          overflow: initial;
           padding: 1px 10px;
+          overflow: initial;
           font-size: 14px;
           font-weight: 700;
           line-height: 24px;
           color: #fff;
-          background-color: rgba(0, 0, 0, 0.7);
+          background-color: rgb(0 0 0 / 70%);
           border-radius: 3px 0 0 3px;
           opacity: 0;
-          transform: translateX(50px);
           transition: all .6s ease;
+          transform: translateX(50px);
 
           &.fp-right {
             right: 36px;
           }
 
           &::after {
-            display: block;
             position: absolute;
             top: 0;
             right: -24px;
+            display: block;
             width: 0;
             height: 0;
+            content: "";
             border-top: 12px solid transparent;
             border-right: 12px solid transparent;
             border-bottom: 12px solid transparent;
-            border-left: 12px solid rgba(0, 0, 0, 0.7);
-            content: "";
+            border-left: 12px solid rgb(0 0 0 / 70%);
           }
         }
 

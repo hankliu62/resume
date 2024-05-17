@@ -29,9 +29,9 @@ body {
 }
 
 .c-swiper .swiper-slide .project-wrapper {
+  transition: transform .6s cubic-bezier(0.8, 0, 0.55, 0.94);
   transform: scale(0.92);
   transform-origin: 50% 100%;
-  transition: transform .6s cubic-bezier(0.8, 0, 0.55, 0.94);
 }
 
 .c-swiper .swiper-slide.swiper-slide-active .project-wrapper {
@@ -40,12 +40,12 @@ body {
 
 .c-swiper .swiper-button-prev,
 .c-swiper .swiper-button-next {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgb(255 255 255 / 70%);
 }
 
 .c-swiper .swiper-button-prev:hover,
 .c-swiper .swiper-button-next:hover {
-  color: rgba(255, 255, 255, 1);
+  color: rgb(255 255 255 / 100%);
 }
 
 .c-swiper .swiper-button-prev {
